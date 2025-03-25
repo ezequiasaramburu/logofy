@@ -23,7 +23,7 @@ const Buttons: React.FC<ButtonProps> = ({ setActive, active }) => {
       </div>
 
       <div>
-        <p>App by jac wida</p>
+        <p>Made with 🧉 & 💙 by Ezequías</p>
       </div>
     </div>
   );

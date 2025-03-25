@@ -1,4 +1,4 @@
-import { Activity, icons } from "lucide-react";
+import { SquareActivity, icons } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -21,7 +21,7 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
   const storageValue = JSON.parse(localStorage.getItem("value"));
 
   const [icon, setIcon] = useState(
-    storageValue ? storageValue?.icon : "Activity"
+    storageValue ? storageValue?.icon : SquareActivity
   );
   const Icon = ({
     name,
@@ -42,14 +42,15 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
 
     return <LucidIcon color={color} size={size} />;
   };
+
   return (
     <div>
       <Dialog>
-        <DialogTrigger>
+        <DialogTrigger asChild>
           <Button
             variant="secondary"
             size="icon"
-            className="my-1 py-4  font-bold"
+            className="my-1 py-4 font-bold"
           >
             <Icon name={icon} color="#000" size={20} />
           </Button>
@@ -62,7 +63,7 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
                 {Icons.map((icon) => (
                   <div
                     key={icon}
-                    className="border p-2 rounded-sm flex items-center justify-center cursor-pointer"
+                    className="border p-2 rounded-sm flex items-center justify-center cursor-pointer hover:bg-gray-100"
                     onClick={() => {
                       selectedIcon(icon);
                       setIcon(icon);

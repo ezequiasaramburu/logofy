@@ -10,7 +10,7 @@ import { UpdateStorageContext } from "@/context/update-storage-context";
 import { useState } from "react";
 
 export default function Home() {
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
   const [updateStorage, setUpdateStorage] = useState({});
   const [downloadIcon, setDownloadIcon] = useState();
   return (

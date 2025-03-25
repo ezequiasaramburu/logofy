@@ -9,4 +9,18 @@ export const Icons = [
   "ZoomOut",
   "Accessibility",
   "AlarmClock",
+  // Additional commonly used icons
+  "Home",
+  "Settings",
+  "Search",
+  "User",
+  "Bell",
+  "Mail",
+  "File",
+  "Folder",
+  "Trash",
+  "Check",
+  "Lock",
+  "Heart",
+  "Star"
 ];

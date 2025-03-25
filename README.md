@@ -23,14 +23,7 @@ A simple and intuitive web application for creating custom logos and favicons us
 
 ## Getting Started
 
-1. Clone the repository:
-
-```bash
-git clone [your-repo-url]
-cd logo-maker
-```
-
-2. Install dependencies:
+1. Install dependencies:
 
 ```bash
 npm install
@@ -40,7 +33,7 @@ yarn install
 pnpm install
 ```
 
-3. Run the development server:
+2. Run the development server:
 
 ```bash
 npm run dev
@@ -50,7 +43,7 @@ yarn dev
 pnpm dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) with your browser to start creating logos.
+3. Open [http://localhost:3000](http://localhost:3000) with your browser to start creating logos.
 
 ## Usage
 

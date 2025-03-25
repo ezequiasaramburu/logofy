@@ -1,8 +1,46 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Logofy
+
+A simple and intuitive web application for creating custom logos and favicons using Lucide icons. Built with Next.js and TypeScript.
+
+## Features
+
+- 🎨 Create custom logos using Lucide icons
+- 🎯 Generate favicons for your websites
+- 🖼️ Export logos in PNG and SVG formats
+- 🎨 Customize colors and sizes
+- ⚡ Fast and responsive interface
+- 🎯 Real-time preview
+
+## Tech Stack
+
+- [Next.js](https://nextjs.org/) - React framework
+- [TypeScript](https://www.typescriptlang.org/) - Type safety
+- [Tailwind CSS](https://tailwindcss.com/) - Styling
+- [Lucide Icons](https://lucide.dev/) - Icon library
+- [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
+- [html2canvas](https://html2canvas.hertzen.com/) - HTML to canvas conversion
+- [React Best Gradient Color Picker](https://www.npmjs.com/package/react-best-gradient-color-picker) - Color selection
 
 ## Getting Started
 
-First, run the development server:
+1. Clone the repository:
+
+```bash
+git clone [your-repo-url]
+cd logo-maker
+```
+
+2. Install dependencies:
+
+```bash
+npm install
+# or
+yarn install
+# or
+pnpm install
+```
+
+3. Run the development server:
 
 ```bash
 npm run dev
@@ -10,27 +48,24 @@ npm run dev
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+4. Open [http://localhost:3000](http://localhost:3000) with your browser to start creating logos.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Usage
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+1. Select an icon from the Lucide icon library
+2. Customize your logo:
+   - Choose colors
+   - Adjust size
+   - Add text (optional)
+3. Preview your logo in real-time
+4. Export in your preferred format (PNG or SVG)
 
-## Learn More
+## Contributing
 
-To learn more about Next.js, take a look at the following resources:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+This project is licensed under the MIT License - see the LICENSE file for details.

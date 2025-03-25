@@ -9,7 +9,7 @@ const Buttons: React.FC<ButtonProps> = ({ setActive, active }) => {
   const BUTTONS = ["Icon", "Text", "BackGround"];
 
   return (
-    <div className="flex  flex-col justify-between w-full border-r h-screen p-3">
+    <div className="flex flex-col h-[calc(100vh-4rem)] border-r p-3">
       <div className="flex flex-col gap-3">
         {BUTTONS.map((itm, idx) => (
           <Button
@@ -22,8 +22,10 @@ const Buttons: React.FC<ButtonProps> = ({ setActive, active }) => {
         ))}
       </div>
 
-      <div>
-        <p>Made with 🧉 & 💙 by Ezequías</p>
+      <div className="mt-auto pt-4 mb-6 flex justify-center">
+        <p className="text-xs text-muted-foreground text-center">
+          Made with 🧉 & 💙 by Ezequías
+        </p>
       </div>
     </div>
   );

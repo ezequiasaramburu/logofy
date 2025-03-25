@@ -1,4 +1,4 @@
-import { SquareActivity, icons } from "lucide-react";
+import { icons } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
@@ -21,7 +21,7 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
   const storageValue = JSON.parse(localStorage.getItem("value"));
 
   const [icon, setIcon] = useState(
-    storageValue ? storageValue?.icon : SquareActivity
+    storageValue ? storageValue?.icon : "Activity"
   );
   const Icon = ({
     name,

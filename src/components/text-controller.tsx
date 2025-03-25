@@ -5,22 +5,24 @@ import { UpdateStorageContext } from "@/context/update-storage-context";
 import { Input } from "./ui/input";
 
 const TextController = () => {
-  //@ts-ignore
-  const storageValue = JSON.parse(localStorage.getItem("value"));
-  const [size, setSize] = useState(storageValue ? storageValue?.textSize : 20);
+  const [size, setSize] = useState(20);
+  const [color, setColor] = useState("#fff");
+  const [text, setText] = useState("");
+  const { setUpdateStorage } = useContext(UpdateStorageContext);
 
-  const [color, setColor] = useState(
-    storageValue ? storageValue?.textColor : "#fff"
-  );
-
-  const [text, setText] = useState(storageValue ? storageValue?.text : "");
-
-  //@ts-ignore
-  const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
+  // Load initial values from localStorage on client side
+  useEffect(() => {
+    const storageValue = localStorage.getItem("value");
+    if (storageValue) {
+      const parsedValue = JSON.parse(storageValue);
+      setSize(parsedValue.textSize || 20);
+      setColor(parsedValue.textColor || "#fff");
+      setText(parsedValue.text || "");
+    }
+  }, []);
 
   useEffect(() => {
     const updatedValue = {
-      ...storageValue,
       textSize: size,
       textColor: color,
       text: text,
@@ -28,7 +30,7 @@ const TextController = () => {
 
     setUpdateStorage(updatedValue);
     localStorage.setItem("value", JSON.stringify(updatedValue));
-  }, [size, color, text]);
+  }, [size, color, text, setUpdateStorage]);
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-screen">

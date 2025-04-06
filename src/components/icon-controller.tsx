@@ -8,7 +8,7 @@ import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 const IconController = () => {
   const [size, setSize] = useState(350);
   const [rotate, setRotate] = useState(0);
-  const [borderWidth, setBorderWidth] = useState(1);
+  const [borderWidth, setBorderWidth] = useState(1.5);
   const [borderColor, setBorderColor] = useState("#fff");
   const [fillColor, setFillColor] = useState("rgba(255, 255, 255, 0)");
   const [icon, setIcon] = useState("Activity");
@@ -20,7 +20,6 @@ const IconController = () => {
     {}
   );
 
-  // Initialize values from storage
   useEffect(() => {
     if (isInitialized || !storedValue || Object.keys(storedValue).length === 0)
       return;
@@ -62,7 +61,6 @@ const IconController = () => {
       icon: icon,
     };
 
-    // Update both the context and localStorage
     setUpdateStorage(updatedValue);
     localStorage.setItem("value", JSON.stringify(updatedValue));
   }, [
@@ -93,7 +91,7 @@ const IconController = () => {
 
         <Slider
           value={[size]}
-          max={550}
+          max={600}
           step={1}
           onValueChange={(e) => setSize(e[0])}
         />

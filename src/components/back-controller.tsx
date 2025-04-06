@@ -5,7 +5,7 @@ import { UpdateStorageContext } from "@/context/update-storage-context";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 
 const BackGroundController = () => {
-  const [rounded, setRounded] = useState(0);
+  const [rounded, setRounded] = useState(10);
   const [padding, setPadding] = useState(0);
   const [color, setColor] = useState("#000");
   const [isInitialized, setIsInitialized] = useState(false);

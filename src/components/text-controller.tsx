@@ -4,11 +4,15 @@ import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import { Input } from "./ui/input";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
+import { Button } from "./ui/button";
 
 const TextController = () => {
   const [size, setSize] = useState(20);
   const [color, setColor] = useState("#fff");
   const [text, setText] = useState("");
+  const [positionX, setPositionX] = useState(50); // Default to center (50%)
+  const [positionY, setPositionY] = useState(80); // Default to bottom (80%)
+  const [hideIcon, setHideIcon] = useState(false);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
@@ -27,6 +31,9 @@ const TextController = () => {
       setSize(parsedValue.textSize || 20);
       setColor(parsedValue.textColor || "#fff");
       setText(parsedValue.text || "");
+      setPositionX(parsedValue.textPositionX || 50);
+      setPositionY(parsedValue.textPositionY || 80);
+      setHideIcon(parsedValue.hideIcon || false);
     }
 
     setIsInitialized(true);
@@ -46,14 +53,39 @@ const TextController = () => {
       textSize: size,
       textColor: color,
       text: text,
+      textPositionX: positionX,
+      textPositionY: positionY,
+      hideIcon: hideIcon,
     };
 
     setUpdateStorage(updatedValue);
     localStorage.setItem("value", JSON.stringify(updatedValue));
-  }, [size, color, text, setUpdateStorage, isInitialized]);
+  }, [
+    size,
+    color,
+    text,
+    positionX,
+    positionY,
+    hideIcon,
+    setUpdateStorage,
+    isInitialized,
+  ]);
+
+  const toggleIconVisibility = () => {
+    setHideIcon(!hideIcon);
+  };
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-4 h-[calc(100vh-4rem)] overflow-y-auto">
+      <div className="space-y-2 mt-4">
+        <Button
+          variant={hideIcon ? "destructive" : "outline"}
+          onClick={toggleIconVisibility}
+          className="w-full"
+        >
+          {hideIcon ? "Show Icon" : "Remove Icon"}
+        </Button>
+      </div>
       <div className="">
         <p className="text-sm my-1">Text</p>
         <div className="font-semibold">{text ? text : "Your text preview"}</div>
@@ -84,7 +116,35 @@ const TextController = () => {
 
       <div className="space-y-2">
         <div className="flex justify-between items-center">
-          <p className="text-sm">Border Color</p>
+          <p className="text-sm">Horizontal Position</p>
+          <p className="text-xs">{positionX}%</p>
+        </div>
+
+        <Slider
+          defaultValue={[positionX]}
+          max={100}
+          step={1}
+          onValueChange={(e) => setPositionX(e[0])}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex justify-between items-center">
+          <p className="text-sm">Vertical Position</p>
+          <p className="text-xs">{positionY}%</p>
+        </div>
+
+        <Slider
+          defaultValue={[positionY]}
+          max={100}
+          step={1}
+          onValueChange={(e) => setPositionY(e[0])}
+        />
+      </div>
+
+      <div className="space-y-2">
+        <div className="flex justify-between items-center">
+          <p className="text-sm">Text Color</p>
         </div>
         <div className="">
           <ColorsPicker

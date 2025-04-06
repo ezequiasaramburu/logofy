@@ -13,6 +13,9 @@ export interface StoredValue {
   text?: string;
   textSize?: number;
   textColor?: string;
+  textPositionX?: number;
+  textPositionY?: number;
+  hideIcon?: boolean;
 }
 
 export function useLocalStorage<T extends StoredValue>(

@@ -56,6 +56,9 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
         text,
         textSize,
         textColor,
+        textPositionX,
+        textPositionY,
+        hideIcon,
       } = storageValue;
 
       if (!icon) {
@@ -132,20 +135,23 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
       svgWrapper.appendChild(backgroundRect);
 
-      // Center the icon within the SVG
-      const iconGroup = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "g"
-      );
-      const innerSvg = new DOMParser().parseFromString(
-        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-         ${iconSvgElement.outerHTML}
-       </svg>`,
-        "image/svg+xml"
-      ).documentElement;
+      // Only add the icon if it's not hidden
+      if (!hideIcon) {
+        // Center the icon within the SVG
+        const iconGroup = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "g"
+        );
+        const innerSvg = new DOMParser().parseFromString(
+          `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+           ${iconSvgElement.outerHTML}
+         </svg>`,
+          "image/svg+xml"
+        ).documentElement;
 
-      iconGroup.appendChild(innerSvg);
-      svgWrapper.appendChild(iconGroup);
+        iconGroup.appendChild(innerSvg);
+        svgWrapper.appendChild(iconGroup);
+      }
 
       // Add text if it exists
       if (text) {
@@ -153,9 +159,10 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
           "http://www.w3.org/2000/svg",
           "text"
         );
-        textElement.setAttribute("x", "50%");
-        textElement.setAttribute("y", "80%");
+        textElement.setAttribute("x", `${textPositionX || 50}%`);
+        textElement.setAttribute("y", `${textPositionY || 80}%`);
         textElement.setAttribute("text-anchor", "middle");
+        textElement.setAttribute("dominant-baseline", "middle");
         textElement.setAttribute("font-size", `${textSize || 20}px`);
         textElement.setAttribute("fill", textColor || "#fff");
         textElement.textContent = text;
@@ -293,6 +300,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
+                display: storageValue?.hideIcon ? "none" : "block",
               }}
             >
               <Icon
@@ -310,9 +318,9 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
               <div
                 style={{
                   position: "absolute",
-                  bottom: "20%",
-                  left: "50%",
-                  transform: "translateX(-50%)",
+                  bottom: `${100 - (storageValue.textPositionY || 80)}%`,
+                  left: `${storageValue.textPositionX || 50}%`,
+                  transform: "translate(-50%, 50%)",
                   fontSize: `${storageValue.textSize || 20}px`,
                   color: storageValue.textColor || "#fff",
                   textAlign: "center",

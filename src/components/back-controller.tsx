@@ -34,8 +34,12 @@ const BackGroundController = () => {
   useEffect(() => {
     if (!isInitialized) return;
 
+    // Get the current storage value to ensure we preserve all properties
+    const currentStorage = localStorage.getItem("value");
+    const currentValue = currentStorage ? JSON.parse(currentStorage) : {};
+
     const updatedValue: StoredValue = {
-      ...storedValue,
+      ...currentValue,
       bgRounded: rounded,
       bgPadding: padding,
       bgColor: color,

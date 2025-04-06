@@ -10,6 +10,9 @@ export interface StoredValue {
   bgRounded?: number;
   bgPadding?: number;
   bgColor?: string;
+  text?: string;
+  textSize?: number;
+  textColor?: string;
 }
 
 export function useLocalStorage<T extends StoredValue>(

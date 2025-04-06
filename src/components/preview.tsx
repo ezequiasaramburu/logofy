@@ -53,6 +53,9 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
         iconSize,
         iconRotate,
         iconBorderWidth,
+        text,
+        textSize,
+        textColor,
       } = storageValue;
 
       if (!icon) {
@@ -143,6 +146,21 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
       iconGroup.appendChild(innerSvg);
       svgWrapper.appendChild(iconGroup);
+
+      // Add text if it exists
+      if (text) {
+        const textElement = document.createElementNS(
+          "http://www.w3.org/2000/svg",
+          "text"
+        );
+        textElement.setAttribute("x", "50%");
+        textElement.setAttribute("y", "80%");
+        textElement.setAttribute("text-anchor", "middle");
+        textElement.setAttribute("font-size", `${textSize || 20}px`);
+        textElement.setAttribute("fill", textColor || "#fff");
+        textElement.textContent = text;
+        svgWrapper.appendChild(textElement);
+      }
 
       return svgWrapper;
     },
@@ -286,6 +304,25 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                 fillColor={storageValue?.iconFillColor || "#000"}
               />
             </div>
+
+            {/* Text Display */}
+            {storageValue?.text && (
+              <div
+                style={{
+                  position: "absolute",
+                  bottom: "20%",
+                  left: "50%",
+                  transform: "translateX(-50%)",
+                  fontSize: `${storageValue.textSize || 20}px`,
+                  color: storageValue.textColor || "#fff",
+                  textAlign: "center",
+                  width: "100%",
+                  zIndex: 10,
+                }}
+              >
+                {storageValue.text}
+              </div>
+            )}
           </div>
         </div>
       </div>

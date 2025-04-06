@@ -3,15 +3,24 @@ import ColorsPicker from "./color-picker";
 import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import { Input } from "./ui/input";
+import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 
 const TextController = () => {
   const [size, setSize] = useState(20);
   const [color, setColor] = useState("#fff");
   const [text, setText] = useState("");
-  const { setUpdateStorage } = useContext(UpdateStorageContext);
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  // Load initial values from localStorage on client side
+  const { setUpdateStorage } = useContext(UpdateStorageContext);
+  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>(
+    "value",
+    {}
+  );
+
+  // Initialize values from storage
   useEffect(() => {
+    if (isInitialized) return;
+
     const storageValue = localStorage.getItem("value");
     if (storageValue) {
       const parsedValue = JSON.parse(storageValue);
@@ -19,10 +28,21 @@ const TextController = () => {
       setColor(parsedValue.textColor || "#fff");
       setText(parsedValue.text || "");
     }
-  }, []);
 
+    setIsInitialized(true);
+  }, [isInitialized]);
+
+  // Update storage when values change
   useEffect(() => {
+    if (!isInitialized) return;
+
+    // Get existing storage value
+    const existingStorage = localStorage.getItem("value");
+    const existingValue = existingStorage ? JSON.parse(existingStorage) : {};
+
+    // Merge with new text properties
     const updatedValue = {
+      ...existingValue,
       textSize: size,
       textColor: color,
       text: text,
@@ -30,7 +50,7 @@ const TextController = () => {
 
     setUpdateStorage(updatedValue);
     localStorage.setItem("value", JSON.stringify(updatedValue));
-  }, [size, color, text, setUpdateStorage]);
+  }, [size, color, text, setUpdateStorage, isInitialized]);
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-4 h-[calc(100vh-4rem)] overflow-y-auto">

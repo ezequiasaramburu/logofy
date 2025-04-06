@@ -48,8 +48,12 @@ const IconController = () => {
   useEffect(() => {
     if (!isInitialized) return;
 
+    // Get the current storage value to ensure we preserve all properties
+    const currentStorage = localStorage.getItem("value");
+    const currentValue = currentStorage ? JSON.parse(currentStorage) : {};
+
     const updatedValue: StoredValue = {
-      ...storedValue,
+      ...currentValue,
       iconSize: size,
       iconRotate: rotate,
       iconBorderWidth: borderWidth,
@@ -58,8 +62,9 @@ const IconController = () => {
       icon: icon,
     };
 
+    // Update both the context and localStorage
     setUpdateStorage(updatedValue);
-    setStoredValue(updatedValue);
+    localStorage.setItem("value", JSON.stringify(updatedValue));
   }, [
     size,
     rotate,

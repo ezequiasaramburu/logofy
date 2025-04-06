@@ -3,7 +3,7 @@ import ColorsPicker from "./color-picker";
 import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import AllIcons from "./all-icons";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 
 const IconController = () => {
   const [size, setSize] = useState(20);
@@ -16,20 +16,34 @@ const IconController = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
-  const [storedValue, setStoredValue] = useLocalStorage("value", {});
+  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>(
+    "value",
+    {}
+  );
 
   // Initialize values from storage
   useEffect(() => {
     if (isInitialized || !storedValue || Object.keys(storedValue).length === 0)
       return;
 
-    setSize(storedValue.iconSize || 20);
-    setRotate(storedValue.iconRotate || 0);
-    setBorderWidth(storedValue.iconBorderWidth || 2.5);
-    setBorderColor(storedValue.iconBorderColor || "#fff");
-    setFillColor(storedValue.iconFillColor || "#fff");
-    setFillOpacity(storedValue.iconFillOpacity || 0);
-    setIcon(storedValue.icon || "Activity");
+    const {
+      iconSize,
+      iconRotate,
+      iconBorderWidth,
+      iconBorderColor,
+      iconFillColor,
+      iconFillOpacity,
+      icon: storedIcon,
+    } = storedValue;
+
+    if (iconSize) setSize(iconSize);
+    if (iconRotate) setRotate(iconRotate);
+    if (iconBorderWidth) setBorderWidth(iconBorderWidth);
+    if (iconBorderColor) setBorderColor(iconBorderColor);
+    if (iconFillColor) setFillColor(iconFillColor);
+    if (iconFillOpacity) setFillOpacity(iconFillOpacity);
+    if (storedIcon) setIcon(storedIcon);
+
     setIsInitialized(true);
   }, [storedValue, isInitialized]);
 
@@ -37,11 +51,11 @@ const IconController = () => {
   useEffect(() => {
     if (!isInitialized) return;
 
-    const updatedValue = {
+    const updatedValue: StoredValue = {
       ...storedValue,
       iconSize: size,
-      iconBorderWidth: borderWidth,
       iconRotate: rotate,
+      iconBorderWidth: borderWidth,
       iconBorderColor: borderColor,
       iconFillColor: fillColor,
       iconFillOpacity: fillOpacity,

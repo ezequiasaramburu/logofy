@@ -2,7 +2,7 @@ import { Slider } from "./ui/slider";
 import ColorsPicker from "./color-picker";
 import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
-import { useLocalStorage } from "@/hooks/useLocalStorage";
+import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 
 const BackGroundController = () => {
   const [rounded, setRounded] = useState(0);
@@ -11,16 +11,22 @@ const BackGroundController = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
-  const [storedValue, setStoredValue] = useLocalStorage("value", {});
+  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>(
+    "value",
+    {}
+  );
 
   // Initialize values from storage
   useEffect(() => {
     if (isInitialized || !storedValue || Object.keys(storedValue).length === 0)
       return;
 
-    setRounded(storedValue.bgRounded || 0);
-    setPadding(storedValue.bgPadding || 0);
-    setColor(storedValue.bgColor || "#000");
+    const { bgRounded, bgPadding, bgColor } = storedValue;
+
+    if (bgRounded) setRounded(bgRounded);
+    if (bgPadding) setPadding(bgPadding);
+    if (bgColor) setColor(bgColor);
+
     setIsInitialized(true);
   }, [storedValue, isInitialized]);
 
@@ -28,7 +34,7 @@ const BackGroundController = () => {
   useEffect(() => {
     if (!isInitialized) return;
 
-    const updatedValue = {
+    const updatedValue: StoredValue = {
       ...storedValue,
       bgRounded: rounded,
       bgPadding: padding,

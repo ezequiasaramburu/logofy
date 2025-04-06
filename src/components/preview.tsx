@@ -1,7 +1,7 @@
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import html2canvas from "html2canvas";
 import { icons } from "lucide-react";
-import { useContext, useEffect, useState, useCallback } from "react";
+import { useContext, useEffect, useState, useCallback, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
 import { StoredValue } from "@/hooks/useLocalStorage";
 
@@ -48,6 +48,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
         bgColor,
         bgRounded,
         iconBorderColor,
+        iconFillColor,
         icon,
         iconSize,
         iconRotate,
@@ -67,12 +68,16 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       }
 
       const iconElement = (
-        <LucidIcon
-          color={iconBorderColor || "#000"}
-          size={iconSize || 20}
-          strokeWidth={iconBorderWidth || 2}
-          style={{ transform: `rotate(${iconRotate || 0}deg)` }}
-        />
+        <div>
+          <LucidIcon
+            color={iconBorderColor || "#000"}
+            size={iconSize || 20}
+            strokeWidth={iconBorderWidth || 2}
+            style={{
+              transform: `rotate(${iconRotate || 0}deg)`,
+            }}
+          />
+        </div>
       );
 
       const iconSvgString = ReactDOMServer.renderToStaticMarkup(iconElement);
@@ -80,6 +85,24 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
         iconSvgString,
         "image/svg+xml"
       ).documentElement;
+
+      // Apply fill color to paths if needed
+      if (iconFillColor) {
+        // Check if the fill color has opacity
+        const hasOpacity =
+          iconFillColor.includes("rgba") && iconFillColor.includes("0)");
+
+        const paths = iconSvgElement.querySelectorAll("path");
+        paths.forEach((path) => {
+          if (hasOpacity) {
+            // If opacity is 0, remove the fill attribute
+            path.removeAttribute("fill");
+          } else {
+            // Set fill color
+            path.setAttribute("fill", iconFillColor);
+          }
+        });
+      }
 
       const divRect = div.getBoundingClientRect();
       const width = divRect.width;
@@ -166,14 +189,37 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
     size,
     rotate,
     strokeWidth,
+    fillColor,
   }: {
     name: string;
     color: string;
     size: number;
     rotate: number;
     strokeWidth: number;
+    fillColor?: string;
   }) => {
     const LucidIcon = icons[name as keyof typeof icons];
+    const iconRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+      if (iconRef.current && fillColor) {
+        // Check if the fill color has opacity
+        const hasOpacity =
+          fillColor.includes("rgba") && fillColor.includes("0)");
+
+        // Find all path elements in the icon
+        const paths = iconRef.current.querySelectorAll("path");
+        paths.forEach((path) => {
+          if (hasOpacity) {
+            // If opacity is 0, remove the fill attribute
+            path.removeAttribute("fill");
+          } else {
+            // Set fill color
+            path.setAttribute("fill", fillColor);
+          }
+        });
+      }
+    }, [fillColor]);
 
     if (!LucidIcon) {
       console.error(`Icon "${name}" not found.`);
@@ -181,12 +227,16 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
     }
 
     return (
-      <LucidIcon
-        color={color}
-        size={size}
-        strokeWidth={strokeWidth}
-        style={{ transform: `rotate(${rotate}deg)` }}
-      />
+      <div ref={iconRef}>
+        <LucidIcon
+          color={color}
+          size={size}
+          strokeWidth={strokeWidth}
+          style={{
+            transform: `rotate(${rotate}deg)`,
+          }}
+        />
+      </div>
     );
   };
 
@@ -233,6 +283,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                 size={storageValue?.iconSize || 20}
                 rotate={storageValue?.iconRotate || 0}
                 strokeWidth={storageValue?.iconBorderWidth || 2}
+                fillColor={storageValue?.iconFillColor || "#000"}
               />
             </div>
           </div>

@@ -6,7 +6,6 @@ export interface StoredValue {
   iconBorderWidth?: number;
   iconBorderColor?: string;
   iconFillColor?: string;
-  iconFillOpacity?: number;
   icon?: string;
   bgRounded?: number;
   bgPadding?: number;

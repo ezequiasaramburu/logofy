@@ -74,3 +74,18 @@
       @apply bg-background text-foreground;
     }
   }
+
+/* Icon fill styles */
+.icon-with-fill {
+  fill: var(--fill-color, none) !important;
+  fill-opacity: var(--fill-opacity, 0) !important;
+}
+
+/* Apply data attributes to CSS variables */
+[data-fill-color] {
+  --fill-color: attr(data-fill-color);
+}
+
+[data-fill-opacity] {
+  --fill-opacity: calc(attr(data-fill-opacity) / 100);
+}

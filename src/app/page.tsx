@@ -37,7 +37,7 @@ export default function Home() {
     // Reset transition state after animation completes
     setTimeout(() => {
       setIsTransitioning(false);
-    }, 100);
+    }, 200);
   };
 
   return (

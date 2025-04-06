@@ -10,8 +10,7 @@ const IconController = () => {
   const [rotate, setRotate] = useState(0);
   const [borderWidth, setBorderWidth] = useState(1);
   const [borderColor, setBorderColor] = useState("#fff");
-  const [fillColor, setFillColor] = useState("#fff");
-  const [fillOpacity, setFillOpacity] = useState(0);
+  const [fillColor, setFillColor] = useState("rgba(255, 255, 255, 0)");
   const [icon, setIcon] = useState("Activity");
   const [isInitialized, setIsInitialized] = useState(false);
 
@@ -32,7 +31,6 @@ const IconController = () => {
       iconBorderWidth,
       iconBorderColor,
       iconFillColor,
-      iconFillOpacity,
       icon: storedIcon,
     } = storedValue;
 
@@ -41,7 +39,6 @@ const IconController = () => {
     if (iconBorderWidth) setBorderWidth(iconBorderWidth);
     if (iconBorderColor) setBorderColor(iconBorderColor);
     if (iconFillColor) setFillColor(iconFillColor);
-    if (iconFillOpacity) setFillOpacity(iconFillOpacity);
     if (storedIcon) setIcon(storedIcon);
 
     setIsInitialized(true);
@@ -58,7 +55,6 @@ const IconController = () => {
       iconBorderWidth: borderWidth,
       iconBorderColor: borderColor,
       iconFillColor: fillColor,
-      iconFillOpacity: fillOpacity,
       icon: icon,
     };
 
@@ -71,7 +67,6 @@ const IconController = () => {
     fillColor,
     borderWidth,
     icon,
-    fillOpacity,
     setUpdateStorage,
     isInitialized,
   ]);
@@ -141,19 +136,6 @@ const IconController = () => {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <div className="flex justify-between items-center">
-          <p className="text-sm">Fill opacity</p>
-          <p className="text-xs">{fillOpacity} %</p>
-        </div>
-
-        <Slider
-          value={[fillOpacity]}
-          max={100}
-          step={1}
-          onValueChange={(e) => setFillOpacity(e[0])}
-        />
-      </div>
       <div className="space-y-4">
         <div className="flex justify-between items-center">
           <p className="text-sm">Fill Color</p>

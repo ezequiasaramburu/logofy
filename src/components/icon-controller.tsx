@@ -3,6 +3,7 @@ import ColorsPicker from "./color-picker";
 import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import AllIcons from "./all-icons";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const IconController = () => {
   const [size, setSize] = useState(20);
@@ -15,25 +16,26 @@ const IconController = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
+  const [storedValue, setStoredValue] = useLocalStorage("value", {});
 
+  // Initialize values from storage
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const storedValue = localStorage.getItem("value")
-      ? JSON.parse(localStorage.getItem("value")!)
-      : {};
-
-    if (!isInitialized) {
-      setSize(storedValue.iconSize || 20);
-      setRotate(storedValue.iconRotate || 0);
-      setBorderWidth(storedValue.iconBorderWidth || 2.5);
-      setBorderColor(storedValue.iconBorderColor || "#fff");
-      setFillColor(storedValue.iconFillColor || "#fff");
-      setFillOpacity(storedValue.iconFillOpacity || 0);
-      setIcon(storedValue.icon || "Activity");
-      setIsInitialized(true);
+    if (isInitialized || !storedValue || Object.keys(storedValue).length === 0)
       return;
-    }
+
+    setSize(storedValue.iconSize || 20);
+    setRotate(storedValue.iconRotate || 0);
+    setBorderWidth(storedValue.iconBorderWidth || 2.5);
+    setBorderColor(storedValue.iconBorderColor || "#fff");
+    setFillColor(storedValue.iconFillColor || "#fff");
+    setFillOpacity(storedValue.iconFillOpacity || 0);
+    setIcon(storedValue.icon || "Activity");
+    setIsInitialized(true);
+  }, [storedValue, isInitialized]);
+
+  // Update storage when values change
+  useEffect(() => {
+    if (!isInitialized) return;
 
     const updatedValue = {
       ...storedValue,
@@ -47,7 +49,7 @@ const IconController = () => {
     };
 
     setUpdateStorage(updatedValue);
-    localStorage.setItem("value", JSON.stringify(updatedValue));
+    setStoredValue(updatedValue);
   }, [
     size,
     rotate,

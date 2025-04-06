@@ -2,6 +2,7 @@ import { Slider } from "./ui/slider";
 import ColorsPicker from "./color-picker";
 import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
+import { useLocalStorage } from "@/hooks/useLocalStorage";
 
 const BackGroundController = () => {
   const [rounded, setRounded] = useState(0);
@@ -10,21 +11,22 @@ const BackGroundController = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
+  const [storedValue, setStoredValue] = useLocalStorage("value", {});
 
+  // Initialize values from storage
   useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const storedValue = localStorage.getItem("value")
-      ? JSON.parse(localStorage.getItem("value")!)
-      : {};
-
-    if (!isInitialized) {
-      setRounded(storedValue.bgRounded || 0);
-      setPadding(storedValue.bgPadding || 0);
-      setColor(storedValue.bgColor || "#000");
-      setIsInitialized(true);
+    if (isInitialized || !storedValue || Object.keys(storedValue).length === 0)
       return;
-    }
+
+    setRounded(storedValue.bgRounded || 0);
+    setPadding(storedValue.bgPadding || 0);
+    setColor(storedValue.bgColor || "#000");
+    setIsInitialized(true);
+  }, [storedValue, isInitialized]);
+
+  // Update storage when values change
+  useEffect(() => {
+    if (!isInitialized) return;
 
     const updatedValue = {
       ...storedValue,
@@ -34,7 +36,7 @@ const BackGroundController = () => {
     };
 
     setUpdateStorage(updatedValue);
-    localStorage.setItem("value", JSON.stringify(updatedValue));
+    setStoredValue(updatedValue);
   }, [rounded, padding, color, setUpdateStorage, isInitialized]);
 
   return (
@@ -55,7 +57,7 @@ const BackGroundController = () => {
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <p className="text-sm">Padding</p>
-          <p className="text-xs">{padding} px</p>
+          <p className="text-xs">{padding}°</p>
         </div>
 
         <Slider

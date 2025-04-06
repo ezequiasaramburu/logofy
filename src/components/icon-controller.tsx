@@ -77,7 +77,7 @@ const IconController = () => {
   ]);
 
   return (
-    <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-screen">
+    <div className="w-full border-r p-3 flex flex-col gap-4 h-screen overflow-y-auto">
       <div className="flex justify-between">
         <p className="text-sm">Icon</p>
         <p className="text-sm">{icon}</p>

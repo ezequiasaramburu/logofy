@@ -3,13 +3,14 @@ import html2canvas from "html2canvas";
 import { icons } from "lucide-react";
 import { useContext, useEffect, useState, useCallback } from "react";
 import ReactDOMServer from "react-dom/server";
+import { StoredValue } from "@/hooks/useLocalStorage";
 
 interface PreviewProps {
   downloadIcon?: any;
 }
 
 const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
-  const [storageValue, setStorageValue] = useState();
+  const [storageValue, setStorageValue] = useState<StoredValue | null>(null);
 
   const { updateStorage } = useContext(UpdateStorageContext);
 
@@ -41,12 +42,17 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
   const createSvgElementFromDiv = useCallback(
     (div: HTMLElement) => {
-      //@ts-ignore
+      if (!storageValue) return null;
+
       const { bgColor, bgRounded, iconFillColor, icon, iconSize, iconRotate } =
         storageValue;
 
-      //@ts-ignore
-      const LucidIcon = icons[icon];
+      if (!icon) {
+        console.error("Icon name is undefined");
+        return null;
+      }
+
+      const LucidIcon = icons[icon as keyof typeof icons];
 
       if (!LucidIcon) {
         console.error(`Icon "${icon}" not found.`);
@@ -55,9 +61,9 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
       const iconElement = (
         <LucidIcon
-          color={iconFillColor}
-          size={iconSize}
-          style={{ transform: `rotate(${iconRotate}deg)` }}
+          color={iconFillColor || "#000"}
+          size={iconSize || 20}
+          style={{ transform: `rotate(${iconRotate || 0}deg)` }}
         />
       );
 
@@ -86,9 +92,9 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       );
       backgroundRect.setAttribute("width", "100%");
       backgroundRect.setAttribute("height", "100%");
-      backgroundRect.setAttribute("fill", bgColor);
-      backgroundRect.setAttribute("rx", bgRounded); // For rounded corners
-      backgroundRect.setAttribute("ry", bgRounded);
+      backgroundRect.setAttribute("fill", bgColor || "#000");
+      backgroundRect.setAttribute("rx", (bgRounded || 0).toString()); // For rounded corners
+      backgroundRect.setAttribute("ry", (bgRounded || 0).toString());
 
       svgWrapper.appendChild(backgroundRect);
 
@@ -157,8 +163,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
     size: number;
     rotate: number;
   }) => {
-    //@ts-ignore
-    const LucidIcon = icons[name];
+    const LucidIcon = icons[name as keyof typeof icons];
 
     if (!LucidIcon) {
       console.error(`Icon "${name}" not found.`);
@@ -177,9 +182,8 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
   return (
     <div className="w-full p-3 h-screen flex justify-center items-center">
       <div
-        className="w-[500px]  h-[500px] bg-slate-100 border-dashed border"
+        className="w-[500px] h-[500px] bg-slate-100 border-dashed border"
         style={{
-          //@ts-ignore
           padding: storageValue?.bgPadding,
         }}
       >
@@ -187,23 +191,33 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
           className="w-full h-full flex items-center justify-center"
           id="downloadlogodiv"
           style={{
-            //@ts-ignore
-            background: storageValue?.bgColor,
-            //@ts-ignore
+            background: storageValue?.bgColor || "#000",
             borderRadius: storageValue?.bgRounded,
+            overflow: "hidden",
+            position: "relative",
           }}
         >
-          {/* //@ts-ignore */}
-          <Icon
-            //@ts-ignore
-            color={storageValue?.iconFillColor}
-            //@ts-ignore
-            name={storageValue?.icon}
-            //@ts-ignore
-            size={storageValue?.iconSize}
-            //@ts-ignore
-            rotate={storageValue?.iconRotate}
-          />
+          <div
+            style={{
+              width: storageValue?.iconSize
+                ? `${storageValue.iconSize}px`
+                : "20px",
+              height: storageValue?.iconSize
+                ? `${storageValue.iconSize}px`
+                : "20px",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
+          >
+            <Icon
+              color={storageValue?.iconFillColor || "#000"}
+              name={storageValue?.icon || "Activity"}
+              size={storageValue?.iconSize || 20}
+              rotate={storageValue?.iconRotate || 0}
+            />
+          </div>
         </div>
       </div>
     </div>

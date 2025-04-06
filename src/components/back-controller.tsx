@@ -79,7 +79,10 @@ const BackGroundController = () => {
           <p className="text-sm">Background Color</p>
         </div>
         <div className="">
-          <ColorsPicker selectedColor={(color) => setColor(color)} />
+          <ColorsPicker
+            selectedColor={(color) => setColor(color)}
+            initialColor={color}
+          />
         </div>
       </div>
       <div className="my-8"></div>

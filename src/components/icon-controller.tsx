@@ -135,6 +135,7 @@ const IconController = () => {
             selectedColor={(borderColor) => setBorderColor(borderColor)}
             hideEyeDrop
             hidePreset
+            initialColor={borderColor}
           />
         </div>
       </div>
@@ -162,6 +163,7 @@ const IconController = () => {
             selectedColor={(fillColor) => setFillColor(fillColor)}
             hideEyeDrop
             hidePreset
+            initialColor={fillColor}
           />
         </div>
       </div>

@@ -31,7 +31,15 @@ const Buttons = ({ activeTab, setActiveTab }: ButtonProps) => {
 
       <div className="mt-auto pt-4 mb-6 flex justify-center">
         <p className="text-xs text-muted-foreground text-center">
-          Made with 🧉 & 💙 by Ezequías
+          Made with 🧉 & 💙 by{" "}
+          <a
+            href="https://ezequias.me"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            Ezequías
+          </a>
         </p>
       </div>
     </div>

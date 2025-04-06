@@ -47,7 +47,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       const {
         bgColor,
         bgRounded,
-        iconFillColor,
+        iconBorderColor,
         icon,
         iconSize,
         iconRotate,
@@ -68,7 +68,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
       const iconElement = (
         <LucidIcon
-          color={iconFillColor || "#000"}
+          color={iconBorderColor || "#000"}
           size={iconSize || 20}
           strokeWidth={iconBorderWidth || 2}
           style={{ transform: `rotate(${iconRotate || 0}deg)` }}
@@ -177,7 +177,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
     if (!LucidIcon) {
       console.error(`Icon "${name}" not found.`);
-      return null; // or provide a default icon
+      return null;
     }
 
     return (
@@ -228,7 +228,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
               }}
             >
               <Icon
-                color={storageValue?.iconFillColor || "#000"}
+                color={storageValue?.iconBorderColor || "#000"}
                 name={storageValue?.icon || "Activity"}
                 size={storageValue?.iconSize || 20}
                 rotate={storageValue?.iconRotate || 0}

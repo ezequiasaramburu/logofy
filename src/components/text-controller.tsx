@@ -33,10 +33,10 @@ const TextController = () => {
   }, [size, color, text, setUpdateStorage]);
 
   return (
-    <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-screen">
+    <div className="w-full border-r p-3 flex flex-col gap-4 h-[calc(100vh-4rem)] overflow-y-auto">
       <div className="">
         <p className="text-sm my-1">Text</p>
-        <div className="font-semibold">{text ? text : "your text preview"}</div>
+        <div className="font-semibold">{text ? text : "Your text preview"}</div>
       </div>
 
       <div className="space-y-2">

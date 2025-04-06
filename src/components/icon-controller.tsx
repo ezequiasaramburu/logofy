@@ -17,6 +17,8 @@ const IconController = () => {
   const { setUpdateStorage } = useContext(UpdateStorageContext);
 
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const storedValue = localStorage.getItem("value")
       ? JSON.parse(localStorage.getItem("value")!)
       : {};

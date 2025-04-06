@@ -32,7 +32,7 @@ export default function Home() {
       <MaxWidth className="overflow-hidden">
         <Header DownloadIcon={setDownloadIcon} />
 
-        <main className="flex mt-16">
+        <main className="flex mt-16 h-[calc(100vh-4rem)]">
           <div className="w-64 fixed">
             <Buttons activeTab={activeTab} setActiveTab={setActiveTab} />
           </div>
@@ -48,7 +48,18 @@ export default function Home() {
                 )}
               </ClientOnly>
             </div>
-            <div className="w-8/12 px-4">
+            <div
+              className="w-10/12 px-4 flex items-center justify-center"
+              style={{
+                backgroundImage: `
+                  linear-gradient(to right, rgba(0, 0, 0, 0.1) 1px, transparent 1px),
+                  linear-gradient(to bottom, rgba(0, 0, 0, 0.1) 1px, transparent 1px)
+                `,
+                backgroundSize: "20px 20px",
+                backgroundPosition: "-0.5px -0.5px",
+                backgroundColor: "#f5f5f5",
+              }}
+            >
               <Preview downloadIcon={downloadIcon} />
             </div>
           </div>

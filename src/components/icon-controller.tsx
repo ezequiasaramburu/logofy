@@ -6,9 +6,9 @@ import AllIcons from "./all-icons";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 
 const IconController = () => {
-  const [size, setSize] = useState(20);
+  const [size, setSize] = useState(350);
   const [rotate, setRotate] = useState(0);
-  const [borderWidth, setBorderWidth] = useState(2.5);
+  const [borderWidth, setBorderWidth] = useState(1);
   const [borderColor, setBorderColor] = useState("#fff");
   const [fillColor, setFillColor] = useState("#fff");
   const [fillOpacity, setFillOpacity] = useState(0);
@@ -93,7 +93,7 @@ const IconController = () => {
 
         <Slider
           value={[size]}
-          max={500}
+          max={550}
           step={1}
           onValueChange={(e) => setSize(e[0])}
         />
@@ -114,13 +114,14 @@ const IconController = () => {
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <p className="text-sm">Border width</p>
-          <p className="text-xs">{borderWidth} px</p>
+          <p className="text-xs">{borderWidth.toFixed(1)} px</p>
         </div>
 
         <Slider
           value={[borderWidth]}
-          max={10}
-          step={1}
+          max={4}
+          min={1}
+          step={0.1}
           onValueChange={(e) => setBorderWidth(e[0])}
         />
       </div>

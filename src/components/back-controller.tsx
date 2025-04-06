@@ -54,7 +54,7 @@ const BackGroundController = () => {
         </div>
 
         <Slider
-          defaultValue={[rounded]}
+          value={[rounded]}
           max={300}
           step={1}
           onValueChange={(e) => setRounded(e[0])}
@@ -63,11 +63,11 @@ const BackGroundController = () => {
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <p className="text-sm">Padding</p>
-          <p className="text-xs">{padding}°</p>
+          <p className="text-xs">{padding} px</p>
         </div>
 
         <Slider
-          defaultValue={[padding]}
+          value={[padding]}
           max={100}
           step={1}
           onValueChange={(e) => setPadding(e[0])}

@@ -1,25 +1,32 @@
 import { Button } from "./ui/button";
 
 interface ButtonProps {
-  setActive: (i: number) => void;
-  active: number;
+  activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
-const Buttons: React.FC<ButtonProps> = ({ setActive, active }) => {
-  const BUTTONS = ["Icon", "Text", "BackGround"];
-
+const Buttons = ({ activeTab, setActiveTab }: ButtonProps) => {
   return (
     <div className="flex flex-col h-[calc(100vh-4rem)] border-r p-3">
       <div className="flex flex-col gap-3">
-        {BUTTONS.map((itm, idx) => (
-          <Button
-            key={idx}
-            onClick={() => setActive(idx)}
-            variant={active === idx ? "default" : "secondary"}
-          >
-            {itm}
-          </Button>
-        ))}
+        <Button
+          onClick={() => setActiveTab("icon")}
+          variant={activeTab === "icon" ? "default" : "secondary"}
+        >
+          Icon
+        </Button>
+        <Button
+          onClick={() => setActiveTab("text")}
+          variant={activeTab === "text" ? "default" : "secondary"}
+        >
+          Text
+        </Button>
+        <Button
+          onClick={() => setActiveTab("background")}
+          variant={activeTab === "background" ? "default" : "secondary"}
+        >
+          Background
+        </Button>
       </div>
 
       <div className="mt-auto pt-4 mb-6 flex justify-center">

@@ -92,7 +92,7 @@ const IconController = () => {
         </div>
 
         <Slider
-          defaultValue={[size]}
+          value={[size]}
           max={500}
           step={1}
           onValueChange={(e) => setSize(e[0])}
@@ -105,7 +105,7 @@ const IconController = () => {
         </div>
 
         <Slider
-          defaultValue={[rotate]}
+          value={[rotate]}
           max={360}
           step={1}
           onValueChange={(e) => setRotate(e[0])}
@@ -118,7 +118,7 @@ const IconController = () => {
         </div>
 
         <Slider
-          defaultValue={[borderWidth]}
+          value={[borderWidth]}
           max={10}
           step={1}
           onValueChange={(e) => setBorderWidth(e[0])}
@@ -146,7 +146,7 @@ const IconController = () => {
         </div>
 
         <Slider
-          defaultValue={[fillOpacity]}
+          value={[fillOpacity]}
           max={100}
           step={1}
           onValueChange={(e) => setFillOpacity(e[0])}

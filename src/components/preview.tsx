@@ -1,7 +1,7 @@
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import html2canvas from "html2canvas";
 import { icons } from "lucide-react";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useCallback } from "react";
 import ReactDOMServer from "react-dom/server";
 
 interface PreviewProps {
@@ -11,26 +11,23 @@ interface PreviewProps {
 const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
   const [storageValue, setStorageValue] = useState();
 
-  //@ts-ignore
-  const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
+  const { updateStorage } = useContext(UpdateStorageContext);
 
   useEffect(() => {
-    //@ts-ignore
-    const storageDate = JSON.parse(localStorage.getItem("value"));
+    const storageDate = localStorage.getItem("value")
+      ? JSON.parse(localStorage.getItem("value")!)
+      : null;
     setStorageValue(storageDate);
   }, [updateStorage]);
 
-  useEffect(() => {
-    if (downloadIcon) {
-      downloadPng();
-      downloadSvg();
-    }
-  }, [downloadIcon]);
-
-  const downloadPng = () => {
+  const downloadPng = useCallback(() => {
     const downloadlogodiv = document.getElementById("downloadlogodiv");
 
-    //@ts-ignore
+    if (!downloadlogodiv) {
+      console.error("Downloadable div not found.");
+      return;
+    }
+
     html2canvas(downloadlogodiv, {
       backgroundColor: null,
     }).then((canvas) => {
@@ -40,9 +37,82 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       downloadLink.download = "icon.png";
       downloadLink.click();
     });
-  };
+  }, []);
 
-  const downloadSvg = () => {
+  const createSvgElementFromDiv = useCallback(
+    (div: HTMLElement) => {
+      //@ts-ignore
+      const { bgColor, bgRounded, iconFillColor, icon, iconSize, iconRotate } =
+        storageValue;
+
+      //@ts-ignore
+      const LucidIcon = icons[icon];
+
+      if (!LucidIcon) {
+        console.error(`Icon "${icon}" not found.`);
+        return null;
+      }
+
+      const iconElement = (
+        <LucidIcon
+          color={iconFillColor}
+          size={iconSize}
+          style={{ transform: `rotate(${iconRotate}deg)` }}
+        />
+      );
+
+      const iconSvgString = ReactDOMServer.renderToStaticMarkup(iconElement);
+      const iconSvgElement = new DOMParser().parseFromString(
+        iconSvgString,
+        "image/svg+xml"
+      ).documentElement;
+
+      const divRect = div.getBoundingClientRect();
+      const width = divRect.width;
+      const height = divRect.height;
+
+      const svgWrapper = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "svg"
+      );
+      svgWrapper.setAttribute("width", width.toString());
+      svgWrapper.setAttribute("height", height.toString());
+      svgWrapper.setAttribute("xmlns", "http://www.w3.org/2000/svg");
+
+      // Apply background styles
+      const backgroundRect = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "rect"
+      );
+      backgroundRect.setAttribute("width", "100%");
+      backgroundRect.setAttribute("height", "100%");
+      backgroundRect.setAttribute("fill", bgColor);
+      backgroundRect.setAttribute("rx", bgRounded); // For rounded corners
+      backgroundRect.setAttribute("ry", bgRounded);
+
+      svgWrapper.appendChild(backgroundRect);
+
+      // Center the icon within the SVG
+      const iconGroup = document.createElementNS(
+        "http://www.w3.org/2000/svg",
+        "g"
+      );
+      const innerSvg = new DOMParser().parseFromString(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
+         ${iconSvgElement.outerHTML}
+       </svg>`,
+        "image/svg+xml"
+      ).documentElement;
+
+      iconGroup.appendChild(innerSvg);
+      svgWrapper.appendChild(iconGroup);
+
+      return svgWrapper;
+    },
+    [storageValue]
+  );
+
+  const downloadSvg = useCallback(() => {
     const downloadlogodiv = document.getElementById("downloadlogodiv");
 
     if (!downloadlogodiv) {
@@ -52,8 +122,12 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
     const svgElement = createSvgElementFromDiv(downloadlogodiv);
 
+    if (!svgElement) {
+      console.error("Failed to create SVG element.");
+      return;
+    }
+
     const serializer = new XMLSerializer();
-    //@ts-ignore
     const svgBlob = new Blob([serializer.serializeToString(svgElement)], {
       type: "image/svg+xml",
     });
@@ -63,78 +137,14 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
     downloadLink.download = "icon.svg";
     downloadLink.click();
     URL.revokeObjectURL(svgUrl);
-  };
+  }, [createSvgElementFromDiv]);
 
-  //@ts-ignore
-  const createSvgElementFromDiv = (div) => {
-    //@ts-ignore
-    const { bgColor, bgRounded, iconFillColor, icon, iconSize, iconRotate } =
-      storageValue;
-
-    //@ts-ignore
-    const LucidIcon = icons[icon];
-
-    if (!LucidIcon) {
-      console.error(`Icon "${icon}" not found.`);
-      return null;
+  useEffect(() => {
+    if (downloadIcon) {
+      downloadPng();
+      downloadSvg();
     }
-
-    const iconElement = (
-      <LucidIcon
-        color={iconFillColor}
-        size={iconSize}
-        style={{ transform: `rotate(${iconRotate}deg)` }}
-      />
-    );
-
-    const iconSvgString = ReactDOMServer.renderToStaticMarkup(iconElement);
-    const iconSvgElement = new DOMParser().parseFromString(
-      iconSvgString,
-      "image/svg+xml"
-    ).documentElement;
-
-    const divRect = div.getBoundingClientRect();
-    const width = divRect.width;
-    const height = divRect.height;
-
-    const svgWrapper = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "svg"
-    );
-    svgWrapper.setAttribute("width", width.toString());
-    svgWrapper.setAttribute("height", height.toString());
-    svgWrapper.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-
-    // Apply background styles
-    const backgroundRect = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "rect"
-    );
-    backgroundRect.setAttribute("width", "100%");
-    backgroundRect.setAttribute("height", "100%");
-    backgroundRect.setAttribute("fill", bgColor);
-    backgroundRect.setAttribute("rx", bgRounded); // For rounded corners
-    backgroundRect.setAttribute("ry", bgRounded);
-
-    svgWrapper.appendChild(backgroundRect);
-
-    // Center the icon within the SVG
-    const iconGroup = document.createElementNS(
-      "http://www.w3.org/2000/svg",
-      "g"
-    );
-    const innerSvg = new DOMParser().parseFromString(
-      `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-         ${iconSvgElement.outerHTML}
-       </svg>`,
-      "image/svg+xml"
-    ).documentElement;
-
-    iconGroup.appendChild(innerSvg);
-    svgWrapper.appendChild(iconGroup);
-
-    return svgWrapper;
-  };
+  }, [downloadIcon, downloadPng, downloadSvg]);
 
   const Icon = ({
     name,

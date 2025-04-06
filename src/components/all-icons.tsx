@@ -17,8 +17,9 @@ interface AllIconsProps {
 }
 
 const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
-  //@ts-ignore
-  const storageValue = JSON.parse(localStorage.getItem("value"));
+  const storageValue = localStorage.getItem("value")
+    ? JSON.parse(localStorage.getItem("value")!)
+    : null;
 
   const [icon, setIcon] = useState(
     storageValue ? storageValue?.icon : "Activity"
@@ -32,8 +33,7 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
     color: string;
     size: number;
   }) => {
-    //@ts-ignore
-    const LucidIcon = icons[name];
+    const LucidIcon = (icons as Record<string, React.ComponentType<any>>)[name];
 
     if (!LucidIcon) {
       console.error(`Icon "${name}" not found.`);

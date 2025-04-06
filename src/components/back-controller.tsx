@@ -4,24 +4,28 @@ import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
 
 const BackGroundController = () => {
-  //@ts-ignore
-  const storageValue = JSON.parse(localStorage.getItem("value"));
-  const [rounded, setRounded] = useState(
-    storageValue ? storageValue?.bgRounded : 0
-  );
-  const [padding, setPadding] = useState(
-    storageValue ? storageValue?.bgPadding : 0
-  );
-  const [color, setColor] = useState(
-    storageValue ? storageValue?.bgColor : "#000"
-  );
+  const [rounded, setRounded] = useState(0);
+  const [padding, setPadding] = useState(0);
+  const [color, setColor] = useState("#000");
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  //@ts-ignore
-  const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
+  const { setUpdateStorage } = useContext(UpdateStorageContext);
 
   useEffect(() => {
+    const storedValue = localStorage.getItem("value")
+      ? JSON.parse(localStorage.getItem("value")!)
+      : {};
+
+    if (!isInitialized) {
+      setRounded(storedValue.bgRounded || 0);
+      setPadding(storedValue.bgPadding || 0);
+      setColor(storedValue.bgColor || "#000");
+      setIsInitialized(true);
+      return;
+    }
+
     const updatedValue = {
-      ...storageValue,
+      ...storedValue,
       bgRounded: rounded,
       bgPadding: padding,
       bgColor: color,
@@ -29,7 +33,7 @@ const BackGroundController = () => {
 
     setUpdateStorage(updatedValue);
     localStorage.setItem("value", JSON.stringify(updatedValue));
-  }, [rounded, padding, color]);
+  }, [rounded, padding, color, setUpdateStorage, isInitialized]);
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-screen ">
@@ -49,7 +53,7 @@ const BackGroundController = () => {
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <p className="text-sm">Padding</p>
-          <p className="text-xs">{padding}°</p>
+          <p className="text-xs">{padding} px</p>
         </div>
 
         <Slider

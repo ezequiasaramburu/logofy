@@ -5,37 +5,38 @@ import { UpdateStorageContext } from "@/context/update-storage-context";
 import AllIcons from "./all-icons";
 
 const IconController = () => {
-  //@ts-ignore
-  const storageValue = JSON.parse(localStorage.getItem("value"));
-  const [size, setSize] = useState(storageValue ? storageValue?.iconSize : 20);
-  const [rotate, setRotate] = useState(
-    storageValue ? storageValue?.iconRotate : 0
-  );
-  const [borderWidth, setBorderWidth] = useState(
-    storageValue ? storageValue?.iconBorderWidth : 2.5
-  );
-  const [borderColor, setBorderColor] = useState(
-    storageValue ? storageValue?.iconBorderColor : "#fff"
-  );
-  const [fillColor, setFillColor] = useState(
-    storageValue ? storageValue?.iconFillColor : "#fff"
-  );
-  const [fillOpacity, setFillOpacity] = useState(
-    storageValue ? storageValue?.iconFillOpacity : 0
-  );
+  const [size, setSize] = useState(20);
+  const [rotate, setRotate] = useState(0);
+  const [borderWidth, setBorderWidth] = useState(2.5);
+  const [borderColor, setBorderColor] = useState("#fff");
+  const [fillColor, setFillColor] = useState("#fff");
+  const [fillOpacity, setFillOpacity] = useState(0);
+  const [icon, setIcon] = useState("Activity");
+  const [isInitialized, setIsInitialized] = useState(false);
 
-  const [icon, setIcon] = useState(
-    storageValue ? storageValue?.icon : "Activity"
-  );
-
-  //@ts-ignore
-  const { updateStorage, setUpdateStorage } = useContext(UpdateStorageContext);
+  const { setUpdateStorage } = useContext(UpdateStorageContext);
 
   useEffect(() => {
+    const storedValue = localStorage.getItem("value")
+      ? JSON.parse(localStorage.getItem("value")!)
+      : {};
+
+    if (!isInitialized) {
+      setSize(storedValue.iconSize || 20);
+      setRotate(storedValue.iconRotate || 0);
+      setBorderWidth(storedValue.iconBorderWidth || 2.5);
+      setBorderColor(storedValue.iconBorderColor || "#fff");
+      setFillColor(storedValue.iconFillColor || "#fff");
+      setFillOpacity(storedValue.iconFillOpacity || 0);
+      setIcon(storedValue.icon || "Activity");
+      setIsInitialized(true);
+      return;
+    }
+
     const updatedValue = {
-      ...storageValue,
+      ...storedValue,
       iconSize: size,
-      IconBorderWidth: borderWidth,
+      iconBorderWidth: borderWidth,
       iconRotate: rotate,
       iconBorderColor: borderColor,
       iconFillColor: fillColor,
@@ -45,7 +46,17 @@ const IconController = () => {
 
     setUpdateStorage(updatedValue);
     localStorage.setItem("value", JSON.stringify(updatedValue));
-  }, [size, rotate, borderColor, fillColor, borderWidth, icon]);
+  }, [
+    size,
+    rotate,
+    borderColor,
+    fillColor,
+    borderWidth,
+    icon,
+    fillOpacity,
+    setUpdateStorage,
+    isInitialized,
+  ]);
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-screen">

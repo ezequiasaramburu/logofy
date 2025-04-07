@@ -3,21 +3,23 @@ import ColorsPicker from "./color-picker";
 import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
+import {
+  DEFAULT_BACKGROUND_COLOR,
+  DEFAULT_BACKGROUND_ROUNDED,
+  DEFAULT_BACKGROUND_PADDING,
+} from "@/constants/defaults";
 
 const BackGroundController = () => {
-  const [rounded, setRounded] = useState(80);
-  const [padding, setPadding] = useState(45);
-  const [color, setColor] = useState(
-    "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)"
-  );
+  const [rounded, setRounded] = useState(DEFAULT_BACKGROUND_ROUNDED);
+  const [padding, setPadding] = useState(DEFAULT_BACKGROUND_PADDING);
+  const [color, setColor] = useState(DEFAULT_BACKGROUND_COLOR);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
-    bgRounded: 80,
-    bgPadding: 45,
-    bgColor:
-      "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)",
+    bgRounded: DEFAULT_BACKGROUND_ROUNDED,
+    bgPadding: DEFAULT_BACKGROUND_PADDING,
+    bgColor: DEFAULT_BACKGROUND_COLOR,
   });
 
   // Initialize values from storage

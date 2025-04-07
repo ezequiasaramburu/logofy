@@ -4,6 +4,23 @@ import { icons } from "lucide-react";
 import { useContext, useEffect, useState, useCallback, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
 import { StoredValue } from "@/hooks/useLocalStorage";
+import {
+  DEFAULT_BACKGROUND_COLOR,
+  DEFAULT_BACKGROUND_ROUNDED,
+  DEFAULT_ICON_SIZE,
+  DEFAULT_ICON_ROTATE,
+  DEFAULT_ICON_BORDER_WIDTH,
+  DEFAULT_ICON_BORDER_COLOR,
+  DEFAULT_ICON_FILL_COLOR,
+  DEFAULT_ICON,
+  DEFAULT_TEXT_SIZE,
+  DEFAULT_TEXT_COLOR,
+  DEFAULT_TEXT,
+  DEFAULT_TEXT_POSITION_X,
+  DEFAULT_TEXT_POSITION_Y,
+  DEFAULT_HIDE_ICON,
+  DEFAULT_BACKGROUND_PADDING,
+} from "@/constants/defaults";
 
 interface PreviewProps {
   downloadIcon?: any;
@@ -76,11 +93,11 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       const iconElement = (
         <div>
           <LucidIcon
-            color={iconBorderColor || "#000"}
-            size={iconSize || 20}
-            strokeWidth={iconBorderWidth || 2}
+            color={iconBorderColor || DEFAULT_ICON_BORDER_COLOR}
+            size={iconSize || DEFAULT_ICON_SIZE}
+            strokeWidth={iconBorderWidth || DEFAULT_ICON_BORDER_WIDTH}
             style={{
-              transform: `rotate(${iconRotate || 0}deg)`,
+              transform: `rotate(${iconRotate || DEFAULT_ICON_ROTATE}deg)`,
             }}
           />
         </div>
@@ -136,7 +153,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       svgWrapper.appendChild(backgroundRect);
 
       // Only add the icon if it's not hidden
-      if (!hideIcon) {
+      if (hideIcon !== undefined ? !hideIcon : !DEFAULT_HIDE_ICON) {
         // Center the icon within the SVG
         const iconGroup = document.createElementNS(
           "http://www.w3.org/2000/svg",
@@ -159,12 +176,21 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
           "http://www.w3.org/2000/svg",
           "text"
         );
-        textElement.setAttribute("x", `${textPositionX || 50}%`);
-        textElement.setAttribute("y", `${textPositionY || 80}%`);
+        textElement.setAttribute(
+          "x",
+          `${textPositionX || DEFAULT_TEXT_POSITION_X}%`
+        );
+        textElement.setAttribute(
+          "y",
+          `${textPositionY || DEFAULT_TEXT_POSITION_Y}%`
+        );
         textElement.setAttribute("text-anchor", "middle");
         textElement.setAttribute("dominant-baseline", "middle");
-        textElement.setAttribute("font-size", `${textSize || 20}px`);
-        textElement.setAttribute("fill", textColor || "#fff");
+        textElement.setAttribute(
+          "font-size",
+          `${textSize || DEFAULT_TEXT_SIZE}px`
+        );
+        textElement.setAttribute("fill", textColor || DEFAULT_TEXT_COLOR);
         textElement.textContent = text;
         svgWrapper.appendChild(textElement);
       }
@@ -254,11 +280,11 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
     return (
       <div ref={iconRef}>
         <LucidIcon
-          color={color}
-          size={size}
-          strokeWidth={strokeWidth}
+          color={color || DEFAULT_ICON_BORDER_COLOR}
+          size={size || DEFAULT_ICON_SIZE}
+          strokeWidth={strokeWidth || DEFAULT_ICON_BORDER_WIDTH}
           style={{
-            transform: `rotate(${rotate}deg)`,
+            transform: `rotate(${rotate || DEFAULT_ICON_ROTATE}deg)`,
           }}
         />
       </div>
@@ -275,17 +301,16 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
         <div
           className="w-[600px] h-[600px] border-2 border-dashed border-gray-400 relative transition-all duration-300 hover:border-gray-600 hover:shadow-md group-hover:opacity-80"
           style={{
-            padding: storageValue?.bgPadding || 45,
+            padding: storageValue?.bgPadding || DEFAULT_BACKGROUND_PADDING,
           }}
         >
           <div
             className="w-full h-full flex items-center justify-center"
             id="downloadlogodiv"
             style={{
-              background:
-                storageValue?.bgColor ||
-                "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)",
-              borderRadius: storageValue?.bgRounded || 80,
+              background: storageValue?.bgColor || DEFAULT_BACKGROUND_COLOR,
+              borderRadius:
+                storageValue?.bgRounded || DEFAULT_BACKGROUND_ROUNDED,
               overflow: "hidden",
               position: "relative",
             }}
@@ -294,24 +319,37 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
               style={{
                 width: storageValue?.iconSize
                   ? `${storageValue.iconSize}px`
-                  : "350px",
+                  : `${DEFAULT_ICON_SIZE}px`,
                 height: storageValue?.iconSize
                   ? `${storageValue.iconSize}px`
-                  : "350px",
+                  : `${DEFAULT_ICON_SIZE}px`,
                 position: "absolute",
                 top: "50%",
                 left: "50%",
                 transform: "translate(-50%, -50%)",
-                display: storageValue?.hideIcon ? "none" : "block",
+                display:
+                  storageValue?.hideIcon !== undefined
+                    ? storageValue.hideIcon
+                      ? "none"
+                      : "block"
+                    : DEFAULT_HIDE_ICON
+                    ? "none"
+                    : "block",
               }}
             >
               <Icon
-                color={storageValue?.iconBorderColor || "#fff"}
-                name={storageValue?.icon || "Activity"}
-                size={storageValue?.iconSize || 350}
-                rotate={storageValue?.iconRotate || 0}
-                strokeWidth={storageValue?.iconBorderWidth || 2.5}
-                fillColor={storageValue?.iconFillColor || "transparent"}
+                color={
+                  storageValue?.iconBorderColor || DEFAULT_ICON_BORDER_COLOR
+                }
+                name={storageValue?.icon || DEFAULT_ICON}
+                size={storageValue?.iconSize || DEFAULT_ICON_SIZE}
+                rotate={storageValue?.iconRotate || DEFAULT_ICON_ROTATE}
+                strokeWidth={
+                  storageValue?.iconBorderWidth || DEFAULT_ICON_BORDER_WIDTH
+                }
+                fillColor={
+                  storageValue?.iconFillColor || DEFAULT_ICON_FILL_COLOR
+                }
               />
             </div>
 
@@ -320,17 +358,22 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
               <div
                 style={{
                   position: "absolute",
-                  bottom: `${100 - (storageValue.textPositionY || 80)}%`,
-                  left: `${storageValue.textPositionX || 50}%`,
+                  bottom: `${
+                    100 -
+                    (storageValue.textPositionY || DEFAULT_TEXT_POSITION_Y)
+                  }%`,
+                  left: `${
+                    storageValue.textPositionX || DEFAULT_TEXT_POSITION_X
+                  }%`,
                   transform: "translate(-50%, 50%)",
-                  fontSize: `${storageValue.textSize || 20}px`,
-                  color: storageValue.textColor || "#fff",
+                  fontSize: `${storageValue.textSize || DEFAULT_TEXT_SIZE}px`,
+                  color: storageValue.textColor || DEFAULT_TEXT_COLOR,
                   textAlign: "center",
                   width: "100%",
                   zIndex: 10,
                 }}
               >
-                {storageValue.text}
+                {storageValue.text || DEFAULT_TEXT}
               </div>
             )}
           </div>

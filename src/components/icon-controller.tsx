@@ -4,24 +4,32 @@ import { useContext, useEffect, useState } from "react";
 import { UpdateStorageContext } from "@/context/update-storage-context";
 import AllIcons from "./all-icons";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
+import {
+  DEFAULT_ICON_SIZE,
+  DEFAULT_ICON_ROTATE,
+  DEFAULT_ICON_BORDER_WIDTH,
+  DEFAULT_ICON_BORDER_COLOR,
+  DEFAULT_ICON_FILL_COLOR,
+  DEFAULT_ICON,
+} from "@/constants/defaults";
 
 const IconController = () => {
-  const [size, setSize] = useState(350);
-  const [rotate, setRotate] = useState(0);
-  const [borderWidth, setBorderWidth] = useState(2.5);
-  const [borderColor, setBorderColor] = useState("#fff");
-  const [fillColor, setFillColor] = useState("rgba(255, 255, 255, 0)");
-  const [icon, setIcon] = useState("Activity");
+  const [size, setSize] = useState(DEFAULT_ICON_SIZE);
+  const [rotate, setRotate] = useState(DEFAULT_ICON_ROTATE);
+  const [borderWidth, setBorderWidth] = useState(DEFAULT_ICON_BORDER_WIDTH);
+  const [borderColor, setBorderColor] = useState(DEFAULT_ICON_BORDER_COLOR);
+  const [fillColor, setFillColor] = useState(DEFAULT_ICON_FILL_COLOR);
+  const [icon, setIcon] = useState(DEFAULT_ICON);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
-    iconSize: 350,
-    iconRotate: 0,
-    iconBorderWidth: 2.5,
-    iconBorderColor: "#fff",
-    iconFillColor: "rgba(255, 255, 255, 0)",
-    icon: "Activity",
+    iconSize: DEFAULT_ICON_SIZE,
+    iconRotate: DEFAULT_ICON_ROTATE,
+    iconBorderWidth: DEFAULT_ICON_BORDER_WIDTH,
+    iconBorderColor: DEFAULT_ICON_BORDER_COLOR,
+    iconFillColor: DEFAULT_ICON_FILL_COLOR,
+    icon: DEFAULT_ICON,
   });
 
   useEffect(() => {

@@ -29,6 +29,7 @@ interface PreviewProps {
 
 const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
   const [storageValue, setStorageValue] = useState<StoredValue | null>(null);
+  const [showTooltip, setShowTooltip] = useState(false);
   const lastDownloadTimestamp = useRef<number>(0);
 
   useEffect(() => {
@@ -75,6 +76,10 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       }
     }
   }, [downloadIcon]);
+
+  const handleClick = () => {
+    setShowTooltip(!showTooltip);
+  };
 
   const Icon = ({
     name,
@@ -136,18 +141,24 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
   return (
     <div className="w-full h-full flex justify-center items-center relative">
       <div className="relative group w-full md:w-auto">
-        <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-s px-2 py-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
+        <div
+          className={`absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-s px-2 py-2 rounded ${
+            showTooltip ? "opacity-100" : "opacity-0"
+          } md:group-hover:opacity-100 transition-opacity duration-300 z-10`}
+        >
           Downloadable zone
           <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-800"></div>
         </div>
         <div
-          className="w-full aspect-square md:w-[600px] md:h-[600px] border-2 border-dashed border-gray-400 relative transition-all duration-300 hover:border-gray-600 hover:shadow-md group-hover:opacity-80"
+          className="w-full aspect-square md:w-[600px] md:h-[600px] border-2 border-dashed border-gray-400 relative transition-all duration-300 hover:border-gray-600 hover:shadow-md md:group-hover:opacity-80 cursor-pointer"
           style={{
             padding:
               storageValue?.bgPadding !== undefined
                 ? storageValue.bgPadding
                 : DEFAULT_BACKGROUND_PADDING,
+            maxWidth: "100%",
           }}
+          onClick={handleClick}
         >
           <div
             className="w-full h-full flex items-center justify-center"

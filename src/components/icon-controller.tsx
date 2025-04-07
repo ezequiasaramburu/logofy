@@ -104,6 +104,7 @@ const IconController = () => {
         <Slider
           value={[size]}
           max={600}
+          min={100}
           step={1}
           onValueChange={(e) => setSize(e[0])}
         />

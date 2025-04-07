@@ -28,9 +28,10 @@ const BackGroundController = () => {
 
     const { bgRounded, bgPadding, bgColor } = storedValue;
 
-    if (bgRounded) setRounded(bgRounded);
-    if (bgPadding) setPadding(bgPadding);
-    if (bgColor) setColor(bgColor);
+    // Check if values exist in storage (including 0)
+    if (bgRounded !== undefined) setRounded(bgRounded);
+    if (bgPadding !== undefined) setPadding(bgPadding);
+    if (bgColor !== undefined) setColor(bgColor);
 
     setIsInitialized(true);
   }, [storedValue, isInitialized]);
@@ -66,6 +67,7 @@ const BackGroundController = () => {
         <Slider
           value={[rounded]}
           max={300}
+          min={0}
           step={1}
           onValueChange={(e) => setRounded(e[0])}
         />
@@ -79,6 +81,7 @@ const BackGroundController = () => {
         <Slider
           value={[padding]}
           max={100}
+          min={0}
           step={1}
           onValueChange={(e) => setPadding(e[0])}
         />

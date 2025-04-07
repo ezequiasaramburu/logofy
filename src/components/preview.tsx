@@ -147,8 +147,14 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       backgroundRect.setAttribute("width", "100%");
       backgroundRect.setAttribute("height", "100%");
       backgroundRect.setAttribute("fill", bgColor || "#000");
-      backgroundRect.setAttribute("rx", (bgRounded || 0).toString()); // For rounded corners
-      backgroundRect.setAttribute("ry", (bgRounded || 0).toString());
+      backgroundRect.setAttribute(
+        "rx",
+        (bgRounded !== undefined ? bgRounded : 0).toString()
+      ); // For rounded corners
+      backgroundRect.setAttribute(
+        "ry",
+        (bgRounded !== undefined ? bgRounded : 0).toString()
+      );
 
       svgWrapper.appendChild(backgroundRect);
 
@@ -301,7 +307,10 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
         <div
           className="w-[600px] h-[600px] border-2 border-dashed border-gray-400 relative transition-all duration-300 hover:border-gray-600 hover:shadow-md group-hover:opacity-80"
           style={{
-            padding: storageValue?.bgPadding || DEFAULT_BACKGROUND_PADDING,
+            padding:
+              storageValue?.bgPadding !== undefined
+                ? storageValue.bgPadding
+                : DEFAULT_BACKGROUND_PADDING,
           }}
         >
           <div
@@ -310,7 +319,9 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
             style={{
               background: storageValue?.bgColor || DEFAULT_BACKGROUND_COLOR,
               borderRadius:
-                storageValue?.bgRounded || DEFAULT_BACKGROUND_ROUNDED,
+                storageValue?.bgRounded !== undefined
+                  ? storageValue.bgRounded
+                  : DEFAULT_BACKGROUND_ROUNDED,
               overflow: "hidden",
               position: "relative",
             }}

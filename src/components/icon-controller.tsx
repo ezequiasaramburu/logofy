@@ -105,7 +105,8 @@ const IconController = () => {
 
         <Slider
           value={[rotate]}
-          max={360}
+          max={180}
+          min={-180}
           step={1}
           onValueChange={(e) => setRotate(e[0])}
         />

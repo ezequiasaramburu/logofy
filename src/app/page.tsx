@@ -26,18 +26,9 @@ export default function Home() {
   const [activeTab, setActiveTab] = useState("icon");
   const [updateStorage, setUpdateStorage] = useState({});
   const [downloadIcon, setDownloadIcon] = useState();
-  const [isTransitioning, setIsTransitioning] = useState(false);
-  const [previousTab, setPreviousTab] = useState("icon");
 
   const handleTabChange = (tab: string) => {
-    setPreviousTab(activeTab);
-    setIsTransitioning(true);
     setActiveTab(tab);
-
-    // Reset transition state after animation completes
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 200);
   };
 
   return (
@@ -52,18 +43,34 @@ export default function Home() {
           <div className="ml-40 flex-1 flex">
             <div className="w-1/4 h-[calc(100vh-4rem)] overflow-y-auto relative">
               <ClientOnly>
-                <div
-                  className={`absolute inset-0 transition-opacity duration-100 ${
-                    isTransitioning ? "opacity-0" : "opacity-100"
-                  }`}
-                >
-                  {activeTab === "icon" ? (
+                <div className="absolute inset-0">
+                  <div
+                    className={`absolute inset-0 ${
+                      activeTab === "icon"
+                        ? "opacity-100 z-10"
+                        : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  >
                     <DynamicIconController />
-                  ) : activeTab === "text" ? (
+                  </div>
+                  <div
+                    className={`absolute inset-0 ${
+                      activeTab === "text"
+                        ? "opacity-100 z-10"
+                        : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  >
                     <DynamicTextController />
-                  ) : (
+                  </div>
+                  <div
+                    className={`absolute inset-0 ${
+                      activeTab === "background"
+                        ? "opacity-100 z-10"
+                        : "opacity-0 z-0 pointer-events-none"
+                    }`}
+                  >
                     <DynamicBackgroundController />
-                  )}
+                  </div>
                 </div>
               </ClientOnly>
             </div>

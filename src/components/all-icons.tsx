@@ -2,17 +2,15 @@ import { icons } from "lucide-react";
 import { Button } from "./ui/button";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { DEFAULT_ICON } from "@/constants/defaults";
 import { Input } from "./ui/input";
-import { Search } from "lucide-react";
+import { Search, X } from "lucide-react";
 
 interface AllIconsProps {
   selectedIcon: (i: any) => void;
@@ -27,6 +25,7 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
     storageValue ? storageValue?.icon : DEFAULT_ICON
   );
   const [searchTerm, setSearchTerm] = useState("");
+  const [isOpen, setIsOpen] = useState(false);
 
   // Get all icon names from lucide-react
   const allIcons = Object.keys(icons).sort();
@@ -35,6 +34,12 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
   const filteredIcons = allIcons.filter((iconName) =>
     iconName.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const handleIconSelect = (iconName: string) => {
+    selectedIcon(iconName);
+    setIcon(iconName);
+    setIsOpen(false);
+  };
 
   const Icon = ({
     name,
@@ -57,7 +62,7 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
 
   return (
     <div>
-      <Dialog>
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
         <DialogTrigger asChild>
           <Button
             variant="secondary"
@@ -67,10 +72,18 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
             <Icon name={icon} color="#000" size={20} />
           </Button>
         </DialogTrigger>
-        <DialogContent className="max-w-3xl h-[90vh]">
+        <DialogContent className="max-w-3xl h-[90vh] duration-0">
           <div className="space-y-4">
-            <DialogHeader>
+            <DialogHeader className="flex flex-row items-center justify-between">
               <DialogTitle>Pick an Icon</DialogTitle>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setIsOpen(false)}
+                className="h-6 w-6"
+              >
+                <X className="h-4 w-4" />
+              </Button>
             </DialogHeader>
             <div className="relative w-64">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
@@ -83,17 +96,13 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
             </div>
             <div className="grid gap-4 grid-cols-5 md:grid-cols-7 lg:grid-cols-9 overflow-y-auto h-[70vh] pr-2">
               {filteredIcons.map((icon) => (
-                <DialogClose key={icon} asChild>
-                  <div
-                    className="border p-2 rounded-sm flex items-center justify-center cursor-pointer hover:bg-gray-100 aspect-square w-full max-w-[50px]"
-                    onClick={() => {
-                      selectedIcon(icon);
-                      setIcon(icon);
-                    }}
-                  >
-                    <Icon name={icon} color="#000" size={18} />
-                  </div>
-                </DialogClose>
+                <div
+                  key={icon}
+                  className="border p-2 rounded-sm flex items-center justify-center cursor-pointer hover:bg-gray-100 aspect-square w-full max-w-[50px]"
+                  onClick={() => handleIconSelect(icon)}
+                >
+                  <Icon name={icon} color="#000" size={18} />
+                </div>
               ))}
             </div>
           </div>

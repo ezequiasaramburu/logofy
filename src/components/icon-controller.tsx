@@ -1,7 +1,6 @@
 import { Slider } from "./ui/slider";
 import ColorsPicker from "./color-picker";
-import { useContext, useEffect, useState } from "react";
-import { UpdateStorageContext } from "@/context/update-storage-context";
+import { useEffect, useState } from "react";
 import AllIcons from "./all-icons";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 import {
@@ -22,7 +21,6 @@ const IconController = () => {
   const [icon, setIcon] = useState(DEFAULT_ICON);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const { setUpdateStorage } = useContext(UpdateStorageContext);
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
     iconSize: DEFAULT_ICON_SIZE,
     iconRotate: DEFAULT_ICON_ROTATE,
@@ -72,19 +70,9 @@ const IconController = () => {
       icon: icon,
     };
 
-    setUpdateStorage(updatedValue);
     setStoredValue(updatedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    size,
-    rotate,
-    borderColor,
-    fillColor,
-    borderWidth,
-    icon,
-    setUpdateStorage,
-    isInitialized,
-  ]);
+  }, [size, rotate, borderColor, fillColor, borderWidth, icon, isInitialized]);
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-4 h-screen overflow-y-auto">

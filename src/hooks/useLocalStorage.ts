@@ -18,6 +18,9 @@ export interface StoredValue {
   hideIcon?: boolean;
 }
 
+// Custom event name for storage changes
+export const STORAGE_CHANGE_EVENT = "localStorageChange";
+
 export function useLocalStorage<T extends StoredValue>(
   key: string,
   initialValue: T
@@ -52,6 +55,8 @@ export function useLocalStorage<T extends StoredValue>(
       // Save to local storage
       if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(valueToStore));
+        // Dispatch custom event to notify other components
+        window.dispatchEvent(new CustomEvent(STORAGE_CHANGE_EVENT, { detail: valueToStore }));
       }
     } catch (error) {
       console.log(error);

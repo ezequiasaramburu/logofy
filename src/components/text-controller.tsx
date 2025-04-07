@@ -1,7 +1,6 @@
 import { Slider } from "./ui/slider";
 import ColorsPicker from "./color-picker";
-import { useContext, useEffect, useState } from "react";
-import { UpdateStorageContext } from "@/context/update-storage-context";
+import { useEffect, useState } from "react";
 import { Input } from "./ui/input";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 import { Button } from "./ui/button";
@@ -23,7 +22,6 @@ const TextController = () => {
   const [hideIcon, setHideIcon] = useState(DEFAULT_HIDE_ICON);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const { setUpdateStorage } = useContext(UpdateStorageContext);
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
     textSize: DEFAULT_TEXT_SIZE,
     textColor: DEFAULT_TEXT_COLOR,
@@ -74,19 +72,9 @@ const TextController = () => {
       hideIcon: hideIcon,
     };
 
-    setUpdateStorage(updatedValue);
     setStoredValue(updatedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    size,
-    color,
-    text,
-    positionX,
-    positionY,
-    hideIcon,
-    setUpdateStorage,
-    isInitialized,
-  ]);
+  }, [size, color, text, positionX, positionY, hideIcon, isInitialized]);
 
   const toggleIconVisibility = () => {
     setHideIcon(!hideIcon);

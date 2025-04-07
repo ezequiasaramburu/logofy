@@ -1,7 +1,6 @@
 import { Slider } from "./ui/slider";
 import ColorsPicker from "./color-picker";
-import { useContext, useEffect, useState } from "react";
-import { UpdateStorageContext } from "@/context/update-storage-context";
+import { useEffect, useState } from "react";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 import {
   DEFAULT_BACKGROUND_COLOR,
@@ -15,7 +14,6 @@ const BackGroundController = () => {
   const [color, setColor] = useState(DEFAULT_BACKGROUND_COLOR);
   const [isInitialized, setIsInitialized] = useState(false);
 
-  const { setUpdateStorage } = useContext(UpdateStorageContext);
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
     bgRounded: DEFAULT_BACKGROUND_ROUNDED,
     bgPadding: DEFAULT_BACKGROUND_PADDING,
@@ -51,10 +49,9 @@ const BackGroundController = () => {
       bgColor: color,
     };
 
-    setUpdateStorage(updatedValue);
     setStoredValue(updatedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [rounded, padding, color, setUpdateStorage, isInitialized]);
+  }, [rounded, padding, color, isInitialized]);
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-screen ">

@@ -1,9 +1,8 @@
-import { UpdateStorageContext } from "@/context/update-storage-context";
 import html2canvas from "html2canvas";
 import { icons } from "lucide-react";
-import { useContext, useEffect, useState, useCallback, useRef } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import ReactDOMServer from "react-dom/server";
-import { StoredValue } from "@/hooks/useLocalStorage";
+import { StoredValue, STORAGE_CHANGE_EVENT } from "@/hooks/useLocalStorage";
 import {
   DEFAULT_BACKGROUND_COLOR,
   DEFAULT_BACKGROUND_ROUNDED,
@@ -29,14 +28,28 @@ interface PreviewProps {
 const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
   const [storageValue, setStorageValue] = useState<StoredValue | null>(null);
 
-  const { updateStorage } = useContext(UpdateStorageContext);
-
   useEffect(() => {
-    const storageDate = localStorage.getItem("value")
+    const handleStorageChange = (event: CustomEvent<StoredValue>) => {
+      setStorageValue(event.detail);
+    };
+
+    // Initial load
+    const storageData = localStorage.getItem("value")
       ? JSON.parse(localStorage.getItem("value")!)
       : null;
-    setStorageValue(storageDate);
-  }, [updateStorage]);
+    setStorageValue(storageData);
+
+    // Listen for storage changes
+    window.addEventListener(
+      STORAGE_CHANGE_EVENT,
+      handleStorageChange as EventListener
+    );
+    return () =>
+      window.removeEventListener(
+        STORAGE_CHANGE_EVENT,
+        handleStorageChange as EventListener
+      );
+  }, []);
 
   const downloadPng = useCallback(() => {
     const downloadlogodiv = document.getElementById("downloadlogodiv");

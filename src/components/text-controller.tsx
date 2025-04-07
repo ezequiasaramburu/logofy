@@ -5,14 +5,22 @@ import { UpdateStorageContext } from "@/context/update-storage-context";
 import { Input } from "./ui/input";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 import { Button } from "./ui/button";
+import {
+  DEFAULT_TEXT_SIZE,
+  DEFAULT_TEXT_COLOR,
+  DEFAULT_TEXT,
+  DEFAULT_TEXT_POSITION_X,
+  DEFAULT_TEXT_POSITION_Y,
+  DEFAULT_HIDE_ICON,
+} from "@/constants/defaults";
 
 const TextController = () => {
-  const [size, setSize] = useState(20);
-  const [color, setColor] = useState("#fff");
-  const [text, setText] = useState("");
-  const [positionX, setPositionX] = useState(50); // Default to center (50%)
-  const [positionY, setPositionY] = useState(80); // Default to bottom (80%)
-  const [hideIcon, setHideIcon] = useState(false);
+  const [size, setSize] = useState(DEFAULT_TEXT_SIZE);
+  const [color, setColor] = useState(DEFAULT_TEXT_COLOR);
+  const [text, setText] = useState(DEFAULT_TEXT);
+  const [positionX, setPositionX] = useState(DEFAULT_TEXT_POSITION_X);
+  const [positionY, setPositionY] = useState(DEFAULT_TEXT_POSITION_Y);
+  const [hideIcon, setHideIcon] = useState(DEFAULT_HIDE_ICON);
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
@@ -28,12 +36,12 @@ const TextController = () => {
     const storageValue = localStorage.getItem("value");
     if (storageValue) {
       const parsedValue = JSON.parse(storageValue);
-      setSize(parsedValue.textSize || 20);
-      setColor(parsedValue.textColor || "#fff");
-      setText(parsedValue.text || "");
-      setPositionX(parsedValue.textPositionX || 50);
-      setPositionY(parsedValue.textPositionY || 80);
-      setHideIcon(parsedValue.hideIcon || false);
+      setSize(parsedValue.textSize || DEFAULT_TEXT_SIZE);
+      setColor(parsedValue.textColor || DEFAULT_TEXT_COLOR);
+      setText(parsedValue.text || DEFAULT_TEXT);
+      setPositionX(parsedValue.textPositionX || DEFAULT_TEXT_POSITION_X);
+      setPositionY(parsedValue.textPositionY || DEFAULT_TEXT_POSITION_Y);
+      setHideIcon(parsedValue.hideIcon || DEFAULT_HIDE_ICON);
     }
 
     setIsInitialized(true);
@@ -105,6 +113,7 @@ const TextController = () => {
           defaultValue={[size]}
           max={500}
           step={1}
+          min={20}
           onValueChange={(e) => setSize(e[0])}
         />
       </div>

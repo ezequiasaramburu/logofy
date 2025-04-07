@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { Space_Mono } from "next/font/google";
+import { JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
-const font = Space_Mono({ subsets: ["latin"], weight: ["400", "700"] });
+const font = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
   title: "SimpleLogo - Make Cool Logos & Favicons in Seconds for Free",

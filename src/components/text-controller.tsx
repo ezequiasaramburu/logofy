@@ -86,13 +86,8 @@ const TextController = () => {
           {hideIcon ? "Show Icon" : "Remove Icon"}
         </Button>
       </div>
-      <div className="">
-        <p className="text-sm my-1">Text</p>
-        <div className="font-semibold">{text ? text : "Your text preview"}</div>
-      </div>
-
       <div className="space-y-2">
-        <p className="text-sm">Input Text</p>
+        <p className="text-sm">Text</p>
 
         <Input
           type="text"

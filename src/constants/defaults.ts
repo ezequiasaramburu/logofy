@@ -4,9 +4,10 @@ export const DEFAULT_BACKGROUND_ROUNDED = 80;
 export const DEFAULT_BACKGROUND_PADDING = 45;
 
 // Icon defaults
-export const DEFAULT_ICON_SIZE = 350;
+export const DEFAULT_ICON_SIZE_DESKTOP = 350;
+export const DEFAULT_ICON_SIZE_MOBILE = 260;
 export const DEFAULT_ICON_ROTATE = 0;
-export const DEFAULT_ICON_BORDER_WIDTH = 1.6;
+export const DEFAULT_ICON_BORDER_WIDTH = 1.5;
 export const DEFAULT_ICON_BORDER_COLOR = "#fff";
 export const DEFAULT_ICON_FILL_COLOR = "#FF8C00";
 export const DEFAULT_ICON = "Rocket";

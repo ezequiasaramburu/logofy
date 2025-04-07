@@ -5,7 +5,8 @@ import { downloadPng, downloadSvg, downloadIco } from "@/utils/download";
 import {
   DEFAULT_BACKGROUND_COLOR,
   DEFAULT_BACKGROUND_ROUNDED,
-  DEFAULT_ICON_SIZE,
+  DEFAULT_ICON_SIZE_DESKTOP,
+  DEFAULT_ICON_SIZE_MOBILE,
   DEFAULT_ICON_ROTATE,
   DEFAULT_ICON_BORDER_WIDTH,
   DEFAULT_ICON_BORDER_COLOR,
@@ -28,31 +29,32 @@ interface PreviewProps {
 }
 
 const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
+  const [isMobile, setIsMobile] = useState(false);
   const [storageValue, setStorageValue] = useState<StoredValue | null>(null);
   const [showTooltip, setShowTooltip] = useState(false);
   const lastDownloadTimestamp = useRef<number>(0);
 
+  // Check if we're on mobile
   useEffect(() => {
-    const handleStorageChange = (event: CustomEvent<StoredValue>) => {
-      setStorageValue(event.detail);
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
     };
 
-    // Initial load
-    const storageData = localStorage.getItem("value")
-      ? JSON.parse(localStorage.getItem("value")!)
-      : null;
-    setStorageValue(storageData);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
-    // Listen for storage changes
-    window.addEventListener(
-      STORAGE_CHANGE_EVENT,
-      handleStorageChange as EventListener
-    );
+  useEffect(() => {
+    const handleStorageChange = () => {
+      const value = localStorage.getItem("value");
+      setStorageValue(value ? JSON.parse(value) : null);
+    };
+
+    handleStorageChange();
+    window.addEventListener(STORAGE_CHANGE_EVENT, handleStorageChange);
     return () =>
-      window.removeEventListener(
-        STORAGE_CHANGE_EVENT,
-        handleStorageChange as EventListener
-      );
+      window.removeEventListener(STORAGE_CHANGE_EVENT, handleStorageChange);
   }, []);
 
   // Only trigger download when explicitly requested via dropdown
@@ -64,11 +66,11 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       lastDownloadTimestamp.current = downloadIcon.timestamp;
 
       switch (downloadIcon.format) {
-        case "svg":
-          downloadSvg();
-          break;
         case "png":
           downloadPng();
+          break;
+        case "svg":
+          downloadSvg();
           break;
         case "ico":
           downloadIco();
@@ -128,7 +130,10 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       <div ref={iconRef}>
         <LucidIcon
           color={color || DEFAULT_ICON_BORDER_COLOR}
-          size={size || DEFAULT_ICON_SIZE}
+          size={
+            size ||
+            (isMobile ? DEFAULT_ICON_SIZE_MOBILE : DEFAULT_ICON_SIZE_DESKTOP)
+          }
           strokeWidth={strokeWidth || DEFAULT_ICON_BORDER_WIDTH}
           style={{
             transform: `rotate(${rotate || DEFAULT_ICON_ROTATE}deg)`,
@@ -177,10 +182,18 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
               style={{
                 width: storageValue?.iconSize
                   ? `${storageValue.iconSize}px`
-                  : `${DEFAULT_ICON_SIZE}px`,
+                  : `${
+                      isMobile
+                        ? DEFAULT_ICON_SIZE_MOBILE
+                        : DEFAULT_ICON_SIZE_DESKTOP
+                    }px`,
                 height: storageValue?.iconSize
                   ? `${storageValue.iconSize}px`
-                  : `${DEFAULT_ICON_SIZE}px`,
+                  : `${
+                      isMobile
+                        ? DEFAULT_ICON_SIZE_MOBILE
+                        : DEFAULT_ICON_SIZE_DESKTOP
+                    }px`,
                 position: "absolute",
                 top: "50%",
                 left: "50%",
@@ -200,7 +213,12 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                   storageValue?.iconBorderColor || DEFAULT_ICON_BORDER_COLOR
                 }
                 name={storageValue?.icon || DEFAULT_ICON}
-                size={storageValue?.iconSize || DEFAULT_ICON_SIZE}
+                size={
+                  storageValue?.iconSize ||
+                  (isMobile
+                    ? DEFAULT_ICON_SIZE_MOBILE
+                    : DEFAULT_ICON_SIZE_DESKTOP)
+                }
                 rotate={storageValue?.iconRotate || DEFAULT_ICON_ROTATE}
                 strokeWidth={
                   storageValue?.iconBorderWidth || DEFAULT_ICON_BORDER_WIDTH

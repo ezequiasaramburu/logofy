@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import AllIcons from "./all-icons";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 import {
-  DEFAULT_ICON_SIZE,
+  DEFAULT_ICON_SIZE_DESKTOP,
+  DEFAULT_ICON_SIZE_MOBILE,
   DEFAULT_ICON_ROTATE,
   DEFAULT_ICON_BORDER_WIDTH,
   DEFAULT_ICON_BORDER_COLOR,
@@ -13,7 +14,8 @@ import {
 } from "@/constants/defaults";
 
 const IconController = () => {
-  const [size, setSize] = useState(DEFAULT_ICON_SIZE);
+  const [isMobile, setIsMobile] = useState(false);
+  const [size, setSize] = useState(DEFAULT_ICON_SIZE_DESKTOP);
   const [rotate, setRotate] = useState(DEFAULT_ICON_ROTATE);
   const [borderWidth, setBorderWidth] = useState(DEFAULT_ICON_BORDER_WIDTH);
   const [borderColor, setBorderColor] = useState(DEFAULT_ICON_BORDER_COLOR);
@@ -21,8 +23,24 @@ const IconController = () => {
   const [icon, setIcon] = useState(DEFAULT_ICON);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  // Check if we're on mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+      setSize(
+        window.innerWidth < 768
+          ? DEFAULT_ICON_SIZE_MOBILE
+          : DEFAULT_ICON_SIZE_DESKTOP
+      );
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
-    iconSize: DEFAULT_ICON_SIZE,
+    iconSize: isMobile ? DEFAULT_ICON_SIZE_MOBILE : DEFAULT_ICON_SIZE_DESKTOP,
     iconRotate: DEFAULT_ICON_ROTATE,
     iconBorderWidth: DEFAULT_ICON_BORDER_WIDTH,
     iconBorderColor: DEFAULT_ICON_BORDER_COLOR,

@@ -6,7 +6,7 @@ export const DEFAULT_BACKGROUND_PADDING = 45;
 // Icon defaults
 export const DEFAULT_ICON_SIZE = 350;
 export const DEFAULT_ICON_ROTATE = 0;
-export const DEFAULT_ICON_BORDER_WIDTH = 2;
+export const DEFAULT_ICON_BORDER_WIDTH = 2.2;
 export const DEFAULT_ICON_BORDER_COLOR = "#fff";
 export const DEFAULT_ICON_FILL_COLOR = "rgba(255, 255, 255, 0)";
 export const DEFAULT_ICON = "Activity";

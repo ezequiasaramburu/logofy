@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { DEFAULT_ICON } from "@/constants/defaults";
 import { Input } from "./ui/input";
 import { Search, X } from "lucide-react";

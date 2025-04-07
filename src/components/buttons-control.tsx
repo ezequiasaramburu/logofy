@@ -29,7 +29,7 @@ const Buttons = ({ activeTab, setActiveTab }: ButtonProps) => {
         </Button>
       </div>
 
-      <div className="mt-auto pt-4 mb-6 flex justify-center">
+      <div className="mt-auto pt-4 mb-4 flex justify-center flex-col gap-4">
         <p className="text-xs text-muted-foreground text-center">
           Made with 🧉 & 💙 by{" "}
           <a
@@ -39,6 +39,17 @@ const Buttons = ({ activeTab, setActiveTab }: ButtonProps) => {
             className="hover:underline"
           >
             Ezequías
+          </a>
+        </p>
+        <p className="text-xs text-muted-foreground text-center">
+          Icons by{" "}
+          <a
+            href="https://lucide.dev/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="hover:underline"
+          >
+            Lucide
           </a>
         </p>
       </div>

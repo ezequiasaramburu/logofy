@@ -18,7 +18,7 @@ const Header: React.FC<HeaderProps> = ({ DownloadIcon }) => {
       <div className="max-w-[2250px] mx-auto px-4 flex justify-between items-center">
         <div className="flex gap-2 items-center">
           <Image src="/icon.svg" alt="logo" width={28} height={28} />
-          <h1 className="font-semibold text-xl">Logofy</h1>
+          <h1 className="font-semibold text-xl">SimpleLogo</h1>
         </div>
 
         <div className="flex items-center">

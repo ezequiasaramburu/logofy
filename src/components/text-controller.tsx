@@ -24,40 +24,48 @@ const TextController = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
-  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>(
-    "value",
-    {}
-  );
+  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
+    textSize: DEFAULT_TEXT_SIZE,
+    textColor: DEFAULT_TEXT_COLOR,
+    text: DEFAULT_TEXT,
+    textPositionX: DEFAULT_TEXT_POSITION_X,
+    textPositionY: DEFAULT_TEXT_POSITION_Y,
+    hideIcon: DEFAULT_HIDE_ICON,
+  });
 
   // Initialize values from storage
   useEffect(() => {
     if (isInitialized) return;
 
-    const storageValue = localStorage.getItem("value");
-    if (storageValue) {
-      const parsedValue = JSON.parse(storageValue);
-      setSize(parsedValue.textSize || DEFAULT_TEXT_SIZE);
-      setColor(parsedValue.textColor || DEFAULT_TEXT_COLOR);
-      setText(parsedValue.text || DEFAULT_TEXT);
-      setPositionX(parsedValue.textPositionX || DEFAULT_TEXT_POSITION_X);
-      setPositionY(parsedValue.textPositionY || DEFAULT_TEXT_POSITION_Y);
-      setHideIcon(parsedValue.hideIcon || DEFAULT_HIDE_ICON);
-    }
+    const {
+      textSize,
+      textColor,
+      text: storedText,
+      textPositionX,
+      textPositionY,
+      hideIcon: storedHideIcon,
+    } = storedValue;
+
+    if (textSize) setSize(textSize);
+    if (textColor) setColor(textColor);
+    if (storedText) setText(storedText);
+    if (textPositionX) setPositionX(textPositionX);
+    if (textPositionY) setPositionY(textPositionY);
+    if (storedHideIcon !== undefined) setHideIcon(storedHideIcon);
 
     setIsInitialized(true);
-  }, [isInitialized]);
+  }, [storedValue, isInitialized]);
 
   // Update storage when values change
   useEffect(() => {
     if (!isInitialized) return;
 
-    // Get existing storage value
-    const existingStorage = localStorage.getItem("value");
-    const existingValue = existingStorage ? JSON.parse(existingStorage) : {};
+    // Get the current storage value to ensure we preserve all properties
+    const currentStorage = localStorage.getItem("value");
+    const currentValue = currentStorage ? JSON.parse(currentStorage) : {};
 
-    // Merge with new text properties
-    const updatedValue = {
-      ...existingValue,
+    const updatedValue: StoredValue = {
+      ...currentValue,
       textSize: size,
       textColor: color,
       text: text,
@@ -67,7 +75,8 @@ const TextController = () => {
     };
 
     setUpdateStorage(updatedValue);
-    localStorage.setItem("value", JSON.stringify(updatedValue));
+    setStoredValue(updatedValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     size,
     color,

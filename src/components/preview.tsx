@@ -282,8 +282,10 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
             className="w-full h-full flex items-center justify-center"
             id="downloadlogodiv"
             style={{
-              background: storageValue?.bgColor || "#000",
-              borderRadius: storageValue?.bgRounded,
+              background:
+                storageValue?.bgColor ||
+                "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)",
+              borderRadius: storageValue?.bgRounded || 80,
               overflow: "hidden",
               position: "relative",
             }}
@@ -292,10 +294,10 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
               style={{
                 width: storageValue?.iconSize
                   ? `${storageValue.iconSize}px`
-                  : "20px",
+                  : "350px",
                 height: storageValue?.iconSize
                   ? `${storageValue.iconSize}px`
-                  : "20px",
+                  : "350px",
                 position: "absolute",
                 top: "50%",
                 left: "50%",
@@ -304,12 +306,12 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
               }}
             >
               <Icon
-                color={storageValue?.iconBorderColor || "#000"}
+                color={storageValue?.iconBorderColor || "#fff"}
                 name={storageValue?.icon || "Activity"}
-                size={storageValue?.iconSize || 20}
+                size={storageValue?.iconSize || 350}
                 rotate={storageValue?.iconRotate || 0}
                 strokeWidth={storageValue?.iconBorderWidth || 2}
-                fillColor={storageValue?.iconFillColor || "#000"}
+                fillColor={storageValue?.iconFillColor || "transparent"}
               />
             </div>
 

@@ -7,17 +7,21 @@ interface ColorsPickerProps {
   hideEyeDrop?: boolean;
   hidePreset?: boolean;
   initialColor?: string;
+  hideGradientControls?: boolean;
+  hideGradientStop?: boolean;
 }
+
 const ColorsPicker: React.FC<ColorsPickerProps> = ({
   hiddenController = false,
   selectedColor,
   hideEyeDrop = false,
   hidePreset = false,
-  initialColor = "rgba(255,255,255,1)",
+  initialColor,
+  hideGradientControls = false,
+  hideGradientStop = true,
 }) => {
   const [color, setColor] = useState(initialColor);
 
-  // Update the color state when initialColor changes
   useEffect(() => {
     setColor(initialColor);
   }, [initialColor]);
@@ -32,6 +36,8 @@ const ColorsPicker: React.FC<ColorsPickerProps> = ({
       hideEyeDrop={hideEyeDrop}
       hidePresets={hidePreset}
       hideControls={hiddenController}
+      hideGradientControls={hideGradientControls}
+      hideGradientStop={hideGradientStop}
     />
   );
 };

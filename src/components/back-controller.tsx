@@ -5,21 +5,22 @@ import { UpdateStorageContext } from "@/context/update-storage-context";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 
 const BackGroundController = () => {
-  const [rounded, setRounded] = useState(10);
+  const [rounded, setRounded] = useState(0);
   const [padding, setPadding] = useState(0);
   const [color, setColor] = useState("#000");
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
-  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>(
-    "value",
-    {}
-  );
+  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
+    bgRounded: 80,
+    bgPadding: 0,
+    bgColor:
+      "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)",
+  });
 
   // Initialize values from storage
   useEffect(() => {
-    if (isInitialized || !storedValue || Object.keys(storedValue).length === 0)
-      return;
+    if (isInitialized) return;
 
     const { bgRounded, bgPadding, bgColor } = storedValue;
 
@@ -86,6 +87,7 @@ const BackGroundController = () => {
           <ColorsPicker
             selectedColor={(color) => setColor(color)}
             initialColor={color}
+            hidePreset
           />
         </div>
       </div>

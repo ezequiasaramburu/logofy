@@ -76,14 +76,6 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
           <div className="space-y-4">
             <DialogHeader className="flex flex-row items-center justify-between">
               <DialogTitle>Pick an Icon</DialogTitle>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => setIsOpen(false)}
-                className="h-6 w-6"
-              >
-                <X className="h-4 w-4" />
-              </Button>
             </DialogHeader>
             <div className="relative w-64">
               <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />

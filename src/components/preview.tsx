@@ -1,8 +1,7 @@
-import html2canvas from "html2canvas";
+import { useEffect, useState, useRef } from "react";
 import { icons } from "lucide-react";
-import { useEffect, useState, useCallback, useRef } from "react";
-import ReactDOMServer from "react-dom/server";
 import { StoredValue, STORAGE_CHANGE_EVENT } from "@/hooks/useLocalStorage";
+import { downloadPng, downloadSvg, downloadIco } from "@/utils/download";
 import {
   DEFAULT_BACKGROUND_COLOR,
   DEFAULT_BACKGROUND_ROUNDED,
@@ -30,6 +29,7 @@ interface PreviewProps {
 
 const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
   const [storageValue, setStorageValue] = useState<StoredValue | null>(null);
+  const lastDownloadTimestamp = useRef<number>(0);
 
   useEffect(() => {
     const handleStorageChange = (event: CustomEvent<StoredValue>) => {
@@ -54,234 +54,14 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       );
   }, []);
 
-  const downloadPng = useCallback(() => {
-    const downloadlogodiv = document.getElementById("downloadlogodiv");
-
-    if (!downloadlogodiv) {
-      console.error("Downloadable div not found.");
-      return;
-    }
-
-    html2canvas(downloadlogodiv, {
-      backgroundColor: null,
-    }).then((canvas) => {
-      const pngimage = canvas.toDataURL("image/png");
-      const downloadLink = document.createElement("a");
-      downloadLink.href = pngimage;
-      downloadLink.download = "icon.png";
-      downloadLink.click();
-    });
-  }, []);
-
-  const downloadIco = useCallback(() => {
-    const downloadlogodiv = document.getElementById("downloadlogodiv");
-
-    if (!downloadlogodiv) {
-      console.error("Downloadable div not found.");
-      return;
-    }
-
-    html2canvas(downloadlogodiv, {
-      backgroundColor: null,
-    }).then((canvas) => {
-      // Convert to ICO format (16x16, 32x32, 48x48)
-      const sizes = [16, 32, 48];
-      const icoCanvas = document.createElement("canvas");
-      const icoContext = icoCanvas.getContext("2d");
-
-      if (!icoContext) {
-        console.error("Failed to get canvas context");
-        return;
-      }
-
-      // Create ICO file
-      const icoBlob = new Blob([], { type: "image/x-icon" });
-      const downloadLink = document.createElement("a");
-      downloadLink.href = URL.createObjectURL(icoBlob);
-      downloadLink.download = "icon.ico";
-      downloadLink.click();
-      URL.revokeObjectURL(downloadLink.href);
-    });
-  }, []);
-
-  const createSvgElementFromDiv = useCallback(
-    (div: HTMLElement) => {
-      if (!storageValue) return null;
-
-      const {
-        bgColor,
-        bgRounded,
-        iconBorderColor,
-        iconFillColor,
-        icon,
-        iconSize,
-        iconRotate,
-        iconBorderWidth,
-        text,
-        textSize,
-        textColor,
-        textPositionX,
-        textPositionY,
-        hideIcon,
-      } = storageValue;
-
-      if (!icon) {
-        console.error("Icon name is undefined");
-        return null;
-      }
-
-      const LucidIcon = icons[icon as keyof typeof icons];
-
-      if (!LucidIcon) {
-        console.error(`Icon "${icon}" not found.`);
-        return null;
-      }
-
-      const iconElement = (
-        <div>
-          <LucidIcon
-            color={iconBorderColor || DEFAULT_ICON_BORDER_COLOR}
-            size={iconSize || DEFAULT_ICON_SIZE}
-            strokeWidth={iconBorderWidth || DEFAULT_ICON_BORDER_WIDTH}
-            style={{
-              transform: `rotate(${iconRotate || DEFAULT_ICON_ROTATE}deg)`,
-            }}
-          />
-        </div>
-      );
-
-      const iconSvgString = ReactDOMServer.renderToStaticMarkup(iconElement);
-      const iconSvgElement = new DOMParser().parseFromString(
-        iconSvgString,
-        "image/svg+xml"
-      ).documentElement;
-
-      // Apply fill color to paths if needed
-      if (iconFillColor) {
-        // Check if the fill color has opacity
-        const hasOpacity =
-          iconFillColor.includes("rgba") && iconFillColor.includes("0)");
-
-        const paths = iconSvgElement.querySelectorAll("path");
-        paths.forEach((path) => {
-          if (hasOpacity) {
-            // If opacity is 0, remove the fill attribute
-            path.removeAttribute("fill");
-          } else {
-            // Set fill color
-            path.setAttribute("fill", iconFillColor);
-          }
-        });
-      }
-
-      const divRect = div.getBoundingClientRect();
-      const width = divRect.width;
-      const height = divRect.height;
-
-      const svgWrapper = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "svg"
-      );
-      svgWrapper.setAttribute("width", width.toString());
-      svgWrapper.setAttribute("height", height.toString());
-      svgWrapper.setAttribute("xmlns", "http://www.w3.org/2000/svg");
-
-      // Apply background styles
-      const backgroundRect = document.createElementNS(
-        "http://www.w3.org/2000/svg",
-        "rect"
-      );
-      backgroundRect.setAttribute("width", "100%");
-      backgroundRect.setAttribute("height", "100%");
-      backgroundRect.setAttribute("fill", bgColor || "#000");
-      backgroundRect.setAttribute(
-        "rx",
-        (bgRounded !== undefined ? bgRounded : 0).toString()
-      ); // For rounded corners
-      backgroundRect.setAttribute(
-        "ry",
-        (bgRounded !== undefined ? bgRounded : 0).toString()
-      );
-
-      svgWrapper.appendChild(backgroundRect);
-
-      // Only add the icon if it's not hidden
-      if (hideIcon !== undefined ? !hideIcon : !DEFAULT_HIDE_ICON) {
-        // Center the icon within the SVG
-        const iconGroup = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "g"
-        );
-        const innerSvg = new DOMParser().parseFromString(
-          `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}">
-           ${iconSvgElement.outerHTML}
-         </svg>`,
-          "image/svg+xml"
-        ).documentElement;
-
-        iconGroup.appendChild(innerSvg);
-        svgWrapper.appendChild(iconGroup);
-      }
-
-      // Add text if it exists
-      if (text) {
-        const textElement = document.createElementNS(
-          "http://www.w3.org/2000/svg",
-          "text"
-        );
-        textElement.setAttribute(
-          "x",
-          `${textPositionX || DEFAULT_TEXT_POSITION_X}%`
-        );
-        textElement.setAttribute(
-          "y",
-          `${textPositionY || DEFAULT_TEXT_POSITION_Y}%`
-        );
-        textElement.setAttribute("text-anchor", "middle");
-        textElement.setAttribute("dominant-baseline", "middle");
-        textElement.setAttribute(
-          "font-size",
-          `${textSize || DEFAULT_TEXT_SIZE}px`
-        );
-        textElement.setAttribute("fill", textColor || DEFAULT_TEXT_COLOR);
-        textElement.textContent = text;
-        svgWrapper.appendChild(textElement);
-      }
-
-      return svgWrapper;
-    },
-    [storageValue]
-  );
-
-  const downloadSvg = useCallback(() => {
-    const downloadlogodiv = document.getElementById("downloadlogodiv");
-
-    if (!downloadlogodiv) {
-      console.error("Downloadable div not found.");
-      return;
-    }
-
-    const svgElement = createSvgElementFromDiv(downloadlogodiv);
-
-    if (!svgElement) {
-      console.error("Failed to create SVG element.");
-      return;
-    }
-
-    const serializer = new XMLSerializer();
-    const svgBlob = new Blob([serializer.serializeToString(svgElement)], {
-      type: "image/svg+xml",
-    });
-    const svgUrl = URL.createObjectURL(svgBlob);
-    const downloadLink = document.createElement("a");
-    downloadLink.href = svgUrl;
-    downloadLink.download = "icon.svg";
-    downloadLink.click();
-    URL.revokeObjectURL(svgUrl);
-  }, [createSvgElementFromDiv]);
-
+  // Only trigger download when explicitly requested via dropdown
   useEffect(() => {
-    if (downloadIcon) {
+    if (
+      downloadIcon &&
+      downloadIcon.timestamp > lastDownloadTimestamp.current
+    ) {
+      lastDownloadTimestamp.current = downloadIcon.timestamp;
+
       switch (downloadIcon.format) {
         case "svg":
           downloadSvg();
@@ -294,7 +74,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
           break;
       }
     }
-  }, [downloadIcon, downloadSvg, downloadPng, downloadIco]);
+  }, [downloadIcon]);
 
   const Icon = ({
     name,

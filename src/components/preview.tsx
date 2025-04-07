@@ -22,7 +22,10 @@ import {
 } from "@/constants/defaults";
 
 interface PreviewProps {
-  downloadIcon?: any;
+  downloadIcon?: {
+    format: "svg" | "png" | "ico";
+    timestamp: number;
+  };
 }
 
 const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
@@ -67,6 +70,37 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
       downloadLink.href = pngimage;
       downloadLink.download = "icon.png";
       downloadLink.click();
+    });
+  }, []);
+
+  const downloadIco = useCallback(() => {
+    const downloadlogodiv = document.getElementById("downloadlogodiv");
+
+    if (!downloadlogodiv) {
+      console.error("Downloadable div not found.");
+      return;
+    }
+
+    html2canvas(downloadlogodiv, {
+      backgroundColor: null,
+    }).then((canvas) => {
+      // Convert to ICO format (16x16, 32x32, 48x48)
+      const sizes = [16, 32, 48];
+      const icoCanvas = document.createElement("canvas");
+      const icoContext = icoCanvas.getContext("2d");
+
+      if (!icoContext) {
+        console.error("Failed to get canvas context");
+        return;
+      }
+
+      // Create ICO file
+      const icoBlob = new Blob([], { type: "image/x-icon" });
+      const downloadLink = document.createElement("a");
+      downloadLink.href = URL.createObjectURL(icoBlob);
+      downloadLink.download = "icon.ico";
+      downloadLink.click();
+      URL.revokeObjectURL(downloadLink.href);
     });
   }, []);
 
@@ -248,10 +282,19 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
   useEffect(() => {
     if (downloadIcon) {
-      downloadPng();
-      downloadSvg();
+      switch (downloadIcon.format) {
+        case "svg":
+          downloadSvg();
+          break;
+        case "png":
+          downloadPng();
+          break;
+        case "ico":
+          downloadIco();
+          break;
+      }
     }
-  }, [downloadIcon, downloadPng, downloadSvg]);
+  }, [downloadIcon, downloadSvg, downloadPng, downloadIco]);
 
   const Icon = ({
     name,

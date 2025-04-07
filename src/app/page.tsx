@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import ClientOnly from "@/components/client-only";
 import Buttons from "@/components/buttons-control";
-import Header from "@/components/header";
+import Header from "@/components/ui/header";
 import MaxWidth from "@/components/max-width";
 import Preview from "@/components/preview";
 import { useState } from "react";

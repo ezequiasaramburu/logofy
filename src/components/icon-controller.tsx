@@ -15,14 +15,17 @@ const IconController = () => {
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
-  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>(
-    "value",
-    {}
-  );
+  const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
+    iconSize: 350,
+    iconRotate: 0,
+    iconBorderWidth: 2,
+    iconBorderColor: "#fff",
+    iconFillColor: "rgba(255, 255, 255, 0)",
+    icon: "Activity",
+  });
 
   useEffect(() => {
-    if (isInitialized || !storedValue || Object.keys(storedValue).length === 0)
-      return;
+    if (isInitialized) return;
 
     const {
       iconSize,
@@ -62,7 +65,8 @@ const IconController = () => {
     };
 
     setUpdateStorage(updatedValue);
-    localStorage.setItem("value", JSON.stringify(updatedValue));
+    setStoredValue(updatedValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     size,
     rotate,

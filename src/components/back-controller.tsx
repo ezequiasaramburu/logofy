@@ -7,7 +7,9 @@ import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 const BackGroundController = () => {
   const [rounded, setRounded] = useState(0);
   const [padding, setPadding] = useState(0);
-  const [color, setColor] = useState("#000");
+  const [color, setColor] = useState(
+    "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)"
+  );
   const [isInitialized, setIsInitialized] = useState(false);
 
   const { setUpdateStorage } = useContext(UpdateStorageContext);
@@ -48,6 +50,7 @@ const BackGroundController = () => {
 
     setUpdateStorage(updatedValue);
     setStoredValue(updatedValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rounded, padding, color, setUpdateStorage, isInitialized]);
 
   return (

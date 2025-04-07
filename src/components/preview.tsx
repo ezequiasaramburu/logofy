@@ -135,13 +135,13 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
 
   return (
     <div className="w-full h-full flex justify-center items-center relative">
-      <div className="relative group">
+      <div className="relative group w-full md:w-auto">
         <div className="absolute -top-12 left-1/2 transform -translate-x-1/2 bg-gray-800 text-white text-s px-2 py-2 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10">
           Downloadable zone
           <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-0 h-0 border-l-8 border-r-8 border-t-8 border-transparent border-t-gray-800"></div>
         </div>
         <div
-          className="w-[600px] h-[600px] border-2 border-dashed border-gray-400 relative transition-all duration-300 hover:border-gray-600 hover:shadow-md group-hover:opacity-80"
+          className="w-full aspect-square md:w-[600px] md:h-[600px] border-2 border-dashed border-gray-400 relative transition-all duration-300 hover:border-gray-600 hover:shadow-md group-hover:opacity-80"
           style={{
             padding:
               storageValue?.bgPadding !== undefined

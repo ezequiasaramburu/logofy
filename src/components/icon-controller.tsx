@@ -75,7 +75,7 @@ const IconController = () => {
   }, [size, rotate, borderColor, fillColor, borderWidth, icon, isInitialized]);
 
   return (
-    <div className="w-full border-r p-3 flex flex-col gap-4 h-screen overflow-y-auto">
+    <div className="w-full border-r p-3 flex flex-col gap-4 h-full overflow-y-auto">
       <div className="flex justify-between">
         <p className="text-sm">Icon</p>
         <p className="text-sm">{icon}</p>

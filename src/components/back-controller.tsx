@@ -54,7 +54,7 @@ const BackGroundController = () => {
   }, [rounded, padding, color, isInitialized]);
 
   return (
-    <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-screen ">
+    <div className="w-full border-r p-3 flex flex-col gap-8 overflow-auto h-full">
       <div className="space-y-2">
         <div className="flex justify-between items-center">
           <p className="text-sm">Rounded</p>

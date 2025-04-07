@@ -81,7 +81,7 @@ const TextController = () => {
   };
 
   return (
-    <div className="w-full border-r p-3 flex flex-col gap-4 h-[calc(100vh-4rem)] overflow-y-auto">
+    <div className="w-full border-r p-3 flex flex-col gap-4 h-full overflow-y-auto">
       <div className="space-y-2 mt-4">
         <Button
           variant={hideIcon ? "destructive" : "outline"}

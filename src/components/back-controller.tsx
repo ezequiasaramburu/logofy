@@ -5,8 +5,8 @@ import { UpdateStorageContext } from "@/context/update-storage-context";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 
 const BackGroundController = () => {
-  const [rounded, setRounded] = useState(0);
-  const [padding, setPadding] = useState(0);
+  const [rounded, setRounded] = useState(80);
+  const [padding, setPadding] = useState(45);
   const [color, setColor] = useState(
     "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)"
   );
@@ -15,7 +15,7 @@ const BackGroundController = () => {
   const { setUpdateStorage } = useContext(UpdateStorageContext);
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
     bgRounded: 80,
-    bgPadding: 0,
+    bgPadding: 45,
     bgColor:
       "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)",
   });

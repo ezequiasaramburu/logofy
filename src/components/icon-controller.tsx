@@ -8,7 +8,7 @@ import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 const IconController = () => {
   const [size, setSize] = useState(350);
   const [rotate, setRotate] = useState(0);
-  const [borderWidth, setBorderWidth] = useState(2);
+  const [borderWidth, setBorderWidth] = useState(2.5);
   const [borderColor, setBorderColor] = useState("#fff");
   const [fillColor, setFillColor] = useState("rgba(255, 255, 255, 0)");
   const [icon, setIcon] = useState("Activity");
@@ -18,7 +18,7 @@ const IconController = () => {
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
     iconSize: 350,
     iconRotate: 0,
-    iconBorderWidth: 2,
+    iconBorderWidth: 2.5,
     iconBorderColor: "#fff",
     iconFillColor: "rgba(255, 255, 255, 0)",
     icon: "Activity",

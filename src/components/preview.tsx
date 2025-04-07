@@ -275,7 +275,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
         <div
           className="w-[600px] h-[600px] border-2 border-dashed border-gray-400 relative transition-all duration-300 hover:border-gray-600 hover:shadow-md group-hover:opacity-80"
           style={{
-            padding: storageValue?.bgPadding,
+            padding: storageValue?.bgPadding || 45,
           }}
         >
           <div
@@ -310,7 +310,7 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                 name={storageValue?.icon || "Activity"}
                 size={storageValue?.iconSize || 350}
                 rotate={storageValue?.iconRotate || 0}
-                strokeWidth={storageValue?.iconBorderWidth || 2}
+                strokeWidth={storageValue?.iconBorderWidth || 2.5}
                 fillColor={storageValue?.iconFillColor || "transparent"}
               />
             </div>

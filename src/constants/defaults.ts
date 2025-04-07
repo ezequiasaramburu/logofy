@@ -1,5 +1,3 @@
-// Default values for the application
-
 // Background defaults
 export const DEFAULT_BACKGROUND_COLOR = "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(11, 197, 225) 94%)";
 export const DEFAULT_BACKGROUND_ROUNDED = 80;

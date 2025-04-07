@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/dialog";
 import { Icons } from "./icons";
 import { useState } from "react";
-
+import { DEFAULT_ICON } from "@/constants/defaults";
 interface AllIconsProps {
   selectedIcon: (i: any) => void;
 }
@@ -22,7 +22,7 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
     : null;
 
   const [icon, setIcon] = useState(
-    storageValue ? storageValue?.icon : "Activity"
+    storageValue ? storageValue?.icon : DEFAULT_ICON
   );
   const Icon = ({
     name,
@@ -61,18 +61,17 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
             <DialogDescription>
               <div className="my-3 grid gap-6  grid-cols-4 md:grid-cols-6">
                 {Icons.map((icon) => (
-                  <div
-                    key={icon}
-                    className="border p-2 rounded-sm flex items-center justify-center cursor-pointer hover:bg-gray-100"
-                    onClick={() => {
-                      selectedIcon(icon);
-                      setIcon(icon);
-                    }}
-                  >
-                    <DialogClose className="mr-0">
+                  <DialogClose key={icon} asChild>
+                    <div
+                      className="border p-2 rounded-sm flex items-center justify-center cursor-pointer hover:bg-gray-100"
+                      onClick={() => {
+                        selectedIcon(icon);
+                        setIcon(icon);
+                      }}
+                    >
                       <Icon name={icon} color="#000" size={20} />
-                    </DialogClose>
-                  </div>
+                    </div>
+                  </DialogClose>
                 ))}
               </div>
             </DialogDescription>

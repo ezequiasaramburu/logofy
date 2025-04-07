@@ -9,9 +9,11 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Icons } from "./icons";
 import { useState } from "react";
 import { DEFAULT_ICON } from "@/constants/defaults";
+import { Input } from "./ui/input";
+import { Search } from "lucide-react";
+
 interface AllIconsProps {
   selectedIcon: (i: any) => void;
 }
@@ -24,6 +26,16 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
   const [icon, setIcon] = useState(
     storageValue ? storageValue?.icon : DEFAULT_ICON
   );
+  const [searchTerm, setSearchTerm] = useState("");
+
+  // Get all icon names from lucide-react
+  const allIcons = Object.keys(icons).sort();
+
+  // Filter icons based on search term
+  const filteredIcons = allIcons.filter((iconName) =>
+    iconName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   const Icon = ({
     name,
     color,
@@ -55,27 +67,36 @@ const AllIcons: React.FC<AllIconsProps> = ({ selectedIcon }) => {
             <Icon name={icon} color="#000" size={20} />
           </Button>
         </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Pick Any Icon</DialogTitle>
-            <DialogDescription>
-              <div className="my-3 grid gap-6  grid-cols-4 md:grid-cols-6">
-                {Icons.map((icon) => (
-                  <DialogClose key={icon} asChild>
-                    <div
-                      className="border p-2 rounded-sm flex items-center justify-center cursor-pointer hover:bg-gray-100"
-                      onClick={() => {
-                        selectedIcon(icon);
-                        setIcon(icon);
-                      }}
-                    >
-                      <Icon name={icon} color="#000" size={20} />
-                    </div>
-                  </DialogClose>
-                ))}
-              </div>
-            </DialogDescription>
-          </DialogHeader>
+        <DialogContent className="max-w-3xl h-[90vh]">
+          <div className="space-y-4">
+            <DialogHeader>
+              <DialogTitle>Pick an Icon</DialogTitle>
+            </DialogHeader>
+            <div className="relative w-64">
+              <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="Search icons..."
+                className="pl-8"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-4 grid-cols-5 md:grid-cols-7 lg:grid-cols-9 overflow-y-auto h-[70vh] pr-2">
+              {filteredIcons.map((icon) => (
+                <DialogClose key={icon} asChild>
+                  <div
+                    className="border p-2 rounded-sm flex items-center justify-center cursor-pointer hover:bg-gray-100 aspect-square w-full max-w-[50px]"
+                    onClick={() => {
+                      selectedIcon(icon);
+                      setIcon(icon);
+                    }}
+                  >
+                    <Icon name={icon} color="#000" size={18} />
+                  </div>
+                </DialogClose>
+              ))}
+            </div>
+          </div>
         </DialogContent>
       </Dialog>
     </div>

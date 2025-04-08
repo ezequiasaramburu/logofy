@@ -7,10 +7,10 @@ export const DEFAULT_BACKGROUND_PADDING = 30;
 export const DEFAULT_ICON_SIZE_DESKTOP = 350;
 export const DEFAULT_ICON_SIZE_MOBILE = 240;
 export const DEFAULT_ICON_ROTATE = 0;
-export const DEFAULT_ICON_BORDER_WIDTH = 1.5;
+export const DEFAULT_ICON_BORDER_WIDTH = 1.2;
 export const DEFAULT_ICON_BORDER_COLOR = "#fff";
 export const DEFAULT_ICON_FILL_COLOR = "#FF8C00";
-export const DEFAULT_ICON = "Rocket";
+export const DEFAULT_ICON = "Boxes";
 export const DEFAULT_ICON_POSITION_X = 50;
 export const DEFAULT_ICON_POSITION_Y = 40;
 

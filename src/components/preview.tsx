@@ -19,6 +19,8 @@ import {
   DEFAULT_TEXT_POSITION_Y,
   DEFAULT_HIDE_ICON,
   DEFAULT_BACKGROUND_PADDING,
+  DEFAULT_ICON_POSITION_X,
+  DEFAULT_ICON_POSITION_Y,
 } from "@/constants/defaults";
 
 interface PreviewProps {
@@ -195,9 +197,13 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                         : DEFAULT_ICON_SIZE_DESKTOP
                     }px`,
                 position: "absolute",
-                top: "50%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
+                bottom: `${
+                  100 - (storageValue?.iconPositionY || DEFAULT_ICON_POSITION_Y)
+                }%`,
+                left: `${
+                  storageValue?.iconPositionX || DEFAULT_ICON_POSITION_X
+                }%`,
+                transform: "translate(-50%, 50%)",
                 display:
                   storageValue?.hideIcon !== undefined
                     ? storageValue.hideIcon

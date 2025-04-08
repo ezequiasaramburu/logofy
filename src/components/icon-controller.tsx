@@ -11,6 +11,8 @@ import {
   DEFAULT_ICON_BORDER_COLOR,
   DEFAULT_ICON_FILL_COLOR,
   DEFAULT_ICON,
+  DEFAULT_ICON_POSITION_X,
+  DEFAULT_ICON_POSITION_Y,
 } from "@/constants/defaults";
 
 const IconController = () => {
@@ -21,6 +23,8 @@ const IconController = () => {
   const [borderColor, setBorderColor] = useState(DEFAULT_ICON_BORDER_COLOR);
   const [fillColor, setFillColor] = useState(DEFAULT_ICON_FILL_COLOR);
   const [icon, setIcon] = useState(DEFAULT_ICON);
+  const [positionX, setPositionX] = useState(DEFAULT_ICON_POSITION_X);
+  const [positionY, setPositionY] = useState(DEFAULT_ICON_POSITION_Y);
   const [isInitialized, setIsInitialized] = useState(false);
 
   // Check if we're on mobile
@@ -46,6 +50,8 @@ const IconController = () => {
     iconBorderColor: DEFAULT_ICON_BORDER_COLOR,
     iconFillColor: DEFAULT_ICON_FILL_COLOR,
     icon: DEFAULT_ICON,
+    iconPositionX: DEFAULT_ICON_POSITION_X,
+    iconPositionY: DEFAULT_ICON_POSITION_Y,
   });
 
   useEffect(() => {
@@ -58,6 +64,8 @@ const IconController = () => {
       iconBorderColor,
       iconFillColor,
       icon: storedIcon,
+      iconPositionX,
+      iconPositionY,
     } = storedValue;
 
     if (iconSize) setSize(iconSize);
@@ -66,6 +74,8 @@ const IconController = () => {
     if (iconBorderColor) setBorderColor(iconBorderColor);
     if (iconFillColor) setFillColor(iconFillColor);
     if (storedIcon) setIcon(storedIcon);
+    if (iconPositionX !== undefined) setPositionX(iconPositionX);
+    if (iconPositionY !== undefined) setPositionY(iconPositionY);
 
     setIsInitialized(true);
   }, [storedValue, isInitialized]);
@@ -86,11 +96,23 @@ const IconController = () => {
       iconBorderColor: borderColor,
       iconFillColor: fillColor,
       icon: icon,
+      iconPositionX: positionX,
+      iconPositionY: positionY,
     };
 
     setStoredValue(updatedValue);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [size, rotate, borderColor, fillColor, borderWidth, icon, isInitialized]);
+  }, [
+    size,
+    rotate,
+    borderColor,
+    fillColor,
+    borderWidth,
+    icon,
+    positionX,
+    positionY,
+    isInitialized,
+  ]);
 
   return (
     <div className="w-full border-r p-3 flex flex-col gap-4 h-full overflow-y-auto">
@@ -127,6 +149,34 @@ const IconController = () => {
           min={-180}
           step={1}
           onValueChange={(e) => setRotate(e[0])}
+        />
+      </div>
+      <div className="space-y-2">
+        <div className="flex justify-between items-center">
+          <p className="text-sm">Horizontal Position</p>
+          <p className="text-xs">{positionX}%</p>
+        </div>
+
+        <Slider
+          value={[positionX]}
+          max={100}
+          min={1}
+          step={1}
+          onValueChange={(e) => setPositionX(e[0])}
+        />
+      </div>
+      <div className="space-y-2">
+        <div className="flex justify-between items-center">
+          <p className="text-sm">Vertical Position</p>
+          <p className="text-xs">{positionY}%</p>
+        </div>
+
+        <Slider
+          value={[positionY]}
+          max={100}
+          min={1}
+          step={1}
+          onValueChange={(e) => setPositionY(e[0])}
         />
       </div>
       <div className="space-y-2">

@@ -124,6 +124,7 @@ const TextController = () => {
         <Slider
           defaultValue={[positionX]}
           max={100}
+          min={1}
           step={1}
           onValueChange={(e) => setPositionX(e[0])}
         />
@@ -138,6 +139,7 @@ const TextController = () => {
         <Slider
           defaultValue={[positionY]}
           max={100}
+          min={1}
           step={1}
           onValueChange={(e) => setPositionY(e[0])}
         />

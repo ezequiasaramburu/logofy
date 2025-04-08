@@ -1,4 +1,5 @@
 import html2canvas from "html2canvas";
+import { DEFAULT_ICON_POSITION_X, DEFAULT_ICON_POSITION_Y } from '../constants/defaults';
 
 // Helper function to get the downloadable zone element
 const getDownloadableZone = () => {
@@ -132,8 +133,16 @@ export const downloadSvg = () => {
     const iconSize = parseInt(iconSvg.getAttribute("width") || "24");
     const offset = -iconSize / 2;
     
-    // Position the icon at the center
-    iconContent.setAttribute("transform", `translate(${offset}, ${offset})`);
+    // Get icon position from storage
+    const storageValue = localStorage.getItem("value")
+      ? JSON.parse(localStorage.getItem("value")!)
+      : null;
+    
+    const iconPositionX = storageValue?.iconPositionX || DEFAULT_ICON_POSITION_X;
+    const iconPositionY = storageValue?.iconPositionY || DEFAULT_ICON_POSITION_Y;
+    
+    // Position the icon at the center with offset
+    iconContent.setAttribute("transform", `translate(${offset + iconPositionX}, ${offset + iconPositionY})`);
     iconGroup.appendChild(iconContent);
     svgDoc.appendChild(iconGroup);
   }

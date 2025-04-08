@@ -250,9 +250,10 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                   }%`,
                   transform: "translate(-50%, 50%)",
                   fontSize: `${
-                    storageValue.textSize || isMobile
+                    storageValue.textSize ||
+                    (isMobile
                       ? DEFAULT_TEXT_SIZE_MOBILE
-                      : DEFAULT_TEXT_SIZE_DESKTOP
+                      : DEFAULT_TEXT_SIZE_DESKTOP)
                   }px`,
                   color: storageValue.textColor || DEFAULT_TEXT_COLOR,
                   textAlign: "center",

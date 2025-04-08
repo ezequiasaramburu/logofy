@@ -167,9 +167,12 @@ export const downloadSvg = () => {
     const textGroup = document.createElementNS("http://www.w3.org/2000/svg", "g");
     textGroup.setAttribute("transform", `translate(${leftValue * 6}, ${y})`);
     
+    // Get the text size from the style or use default
+    const fontSize = textStyles.fontSize || "60px";
+    
     text.setAttribute("text-anchor", "middle");
     text.setAttribute("dominant-baseline", "middle");
-    text.setAttribute("font-size", textStyles.fontSize);
+    text.setAttribute("font-size", fontSize);
     text.setAttribute("fill", textStyles.color);
     text.setAttribute("font-family", textStyles.fontFamily);
     text.setAttribute("font-weight", textStyles.fontWeight);

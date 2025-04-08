@@ -5,7 +5,8 @@ import { Input } from "./ui/input";
 import { useLocalStorage, StoredValue } from "@/hooks/useLocalStorage";
 import { Button } from "./ui/button";
 import {
-  DEFAULT_TEXT_SIZE,
+  DEFAULT_TEXT_SIZE_DESKTOP,
+  DEFAULT_TEXT_SIZE_MOBILE,
   DEFAULT_TEXT_COLOR,
   DEFAULT_TEXT,
   DEFAULT_TEXT_POSITION_X,
@@ -14,7 +15,8 @@ import {
 } from "@/constants/defaults";
 
 const TextController = () => {
-  const [size, setSize] = useState(DEFAULT_TEXT_SIZE);
+  const [isMobile, setIsMobile] = useState(false);
+  const [size, setSize] = useState(DEFAULT_TEXT_SIZE_DESKTOP);
   const [color, setColor] = useState(DEFAULT_TEXT_COLOR);
   const [text, setText] = useState(DEFAULT_TEXT);
   const [positionX, setPositionX] = useState(DEFAULT_TEXT_POSITION_X);
@@ -22,8 +24,24 @@ const TextController = () => {
   const [hideIcon, setHideIcon] = useState(DEFAULT_HIDE_ICON);
   const [isInitialized, setIsInitialized] = useState(false);
 
+  // Check if we're on mobile
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+      setSize(
+        window.innerWidth < 768
+          ? DEFAULT_TEXT_SIZE_MOBILE
+          : DEFAULT_TEXT_SIZE_DESKTOP
+      );
+    };
+
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
   const [storedValue, setStoredValue] = useLocalStorage<StoredValue>("value", {
-    textSize: DEFAULT_TEXT_SIZE,
+    textSize: isMobile ? DEFAULT_TEXT_SIZE_MOBILE : DEFAULT_TEXT_SIZE_DESKTOP,
     textColor: DEFAULT_TEXT_COLOR,
     text: DEFAULT_TEXT,
     textPositionX: DEFAULT_TEXT_POSITION_X,
@@ -107,8 +125,8 @@ const TextController = () => {
         </div>
 
         <Slider
-          defaultValue={[size]}
-          max={500}
+          value={[size]}
+          max={isMobile ? 200 : 500}
           step={1}
           min={20}
           onValueChange={(e) => setSize(e[0])}
@@ -122,7 +140,7 @@ const TextController = () => {
         </div>
 
         <Slider
-          defaultValue={[positionX]}
+          value={[positionX]}
           max={100}
           min={1}
           step={1}
@@ -137,7 +155,7 @@ const TextController = () => {
         </div>
 
         <Slider
-          defaultValue={[positionY]}
+          value={[positionY]}
           max={100}
           min={1}
           step={1}
@@ -155,6 +173,7 @@ const TextController = () => {
             selectedColor={(color) => setColor(color)}
             hideEyeDrop
             hidePreset
+            initialColor={color}
           />
         </div>
       </div>

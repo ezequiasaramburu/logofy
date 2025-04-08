@@ -15,7 +15,8 @@ export const DEFAULT_ICON_POSITION_X = 50;
 export const DEFAULT_ICON_POSITION_Y = 40;
 
 // Text defaults
-export const DEFAULT_TEXT_SIZE = 60;
+export const DEFAULT_TEXT_SIZE_DESKTOP = 60;
+export const DEFAULT_TEXT_SIZE_MOBILE = 35;
 export const DEFAULT_TEXT_COLOR = "#fff";
 export const DEFAULT_TEXT = "SimpleLogo";
 export const DEFAULT_TEXT_POSITION_X = 50;

@@ -12,7 +12,8 @@ import {
   DEFAULT_ICON_BORDER_COLOR,
   DEFAULT_ICON_FILL_COLOR,
   DEFAULT_ICON,
-  DEFAULT_TEXT_SIZE,
+  DEFAULT_TEXT_SIZE_DESKTOP,
+  DEFAULT_TEXT_SIZE_MOBILE,
   DEFAULT_TEXT_COLOR,
   DEFAULT_TEXT,
   DEFAULT_TEXT_POSITION_X,
@@ -248,7 +249,11 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
                     storageValue.textPositionX || DEFAULT_TEXT_POSITION_X
                   }%`,
                   transform: "translate(-50%, 50%)",
-                  fontSize: `${storageValue.textSize || DEFAULT_TEXT_SIZE}px`,
+                  fontSize: `${
+                    storageValue.textSize || isMobile
+                      ? DEFAULT_TEXT_SIZE_MOBILE
+                      : DEFAULT_TEXT_SIZE_DESKTOP
+                  }px`,
                   color: storageValue.textColor || DEFAULT_TEXT_COLOR,
                   textAlign: "center",
                   width: "100%",

@@ -1,4 +1,4 @@
-import { ChevronDown, FileIcon, ImageIcon, FileCodeIcon } from "lucide-react";
+import { ChevronDown, ImageIcon, FileCodeIcon } from "lucide-react";
 import { Button } from "./button";
 import Image from "next/image";
 import {
@@ -47,15 +47,6 @@ const Header: React.FC<HeaderProps> = ({ DownloadIcon }) => {
               >
                 <ImageIcon className="w-4 h-4" />
                 Download PNG
-              </DropdownMenuItem>
-              <DropdownMenuItem
-                onClick={() =>
-                  DownloadIcon({ format: "ico", timestamp: Date.now() })
-                }
-                className="flex items-center gap-2"
-              >
-                <FileIcon className="w-4 h-4" />
-                Download ICO
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import { icons } from "lucide-react";
 import { StoredValue, STORAGE_CHANGE_EVENT } from "@/hooks/useLocalStorage";
-import { downloadPng, downloadSvg, downloadIco } from "@/utils/download";
+import { downloadPng, downloadSvg } from "@/utils/download";
 import {
   DEFAULT_BACKGROUND_COLOR,
   DEFAULT_BACKGROUND_ROUNDED,
@@ -74,9 +74,6 @@ const Preview: React.FC<PreviewProps> = ({ downloadIcon }) => {
           break;
         case "svg":
           downloadSvg();
-          break;
-        case "ico":
-          downloadIco();
           break;
       }
     }

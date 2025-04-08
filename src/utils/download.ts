@@ -1,4 +1,3 @@
-import html2canvas from "html2canvas";
 import { toPng, toSvg } from 'html-to-image';
 
 // Helper function to get the downloadable zone element
@@ -180,38 +179,3 @@ export const downloadSvg = () => {
       });
   });
 };
-
-// Download ICO
-export const downloadIco = () => {
-  const downloadableZone = getDownloadableZone();
-  if (!downloadableZone) return;
-
-  html2canvas(downloadableZone, {
-    backgroundColor: null,
-    scale: 2,
-    logging: false,
-    useCORS: true,
-    allowTaint: true,
-    width: 600,
-    height: 600,
-    onclone: (clonedDoc) => {
-      const clonedElement = clonedDoc.getElementById('downloadlogodiv');
-      if (clonedElement) {
-        clonedElement.style.width = '600px';
-        clonedElement.style.height = '600px';
-        // Ensure font is loaded
-        const textElement = clonedElement.querySelector('div[style*="position: absolute"][style*="bottom"]') as HTMLElement;
-        if (textElement) {
-          const computedStyle = window.getComputedStyle(textElement);
-          textElement.style.fontFamily = computedStyle.fontFamily;
-          textElement.style.fontSize = computedStyle.fontSize;
-          textElement.style.fontWeight = computedStyle.fontWeight;
-          textElement.style.fontStyle = computedStyle.fontStyle;
-        }
-      }
-    }
-  }).then((canvas) => {
-    const pngimage = canvas.toDataURL("image/png");
-    saveToFile(pngimage, "icon.ico");
-  });
-}; 

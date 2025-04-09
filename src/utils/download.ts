@@ -72,7 +72,7 @@ export const downloadPng = () => {
         width: '600px',
         height: '600px',
       },
-      filter: (node) => {
+      filter: () => {
         // Include all elements
         return true;
       },
@@ -152,7 +152,7 @@ export const downloadSvg = () => {
         width: '600px',
         height: '600px',
       },
-      filter: (node) => {
+      filter: () => {
         // Include all elements
         return true;
       },

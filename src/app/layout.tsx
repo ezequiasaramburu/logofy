@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils";
 const font = JetBrains_Mono({ subsets: ["latin"], weight: ["400", "700"] });
 
 export const metadata: Metadata = {
-  title: "SimpleLogo - Make Cool Logos & Favicons in Seconds for Free",
+  title: "SimpleLogo | Make Cool Logos in Seconds for Free",
   description:
-    "Create beautiful custom logos and favicons instantly with SimpleLogo. Free, easy-to-use logo maker with real-time preview. Export in SVG, PNG, and ICO formats. No signup required.",
+    "Create beautiful custom logos instantly with SimpleLogo. Free, easy-to-use logo maker with real-time preview. Export in SVG and PNG formats. No signup required.",
   icons: {
     icon: [
       { url: "/favicon.svg", type: "image/svg+xml" },

@@ -2,6 +2,8 @@
 
 A powerful yet simple web application for creating custom logos using Lucide icons. Built with Next.js and TypeScript, SimpleLogo offers an intuitive interface for designing professional logos in seconds.
 
+Try it out at [simplelogo.ezequias.me](https://www.simplelogo.ezequias.me)
+
 ## 🌟 Features
 
 - 🎨 **Easy Logo Creation**: Create custom logos using Lucide icons with a simple, intuitive interface
@@ -29,8 +31,6 @@ A powerful yet simple web application for creating custom logos using Lucide ico
 - [React Best Gradient Color Picker](https://www.npmjs.com/package/react-best-gradient-color-picker) - Advanced color selection
 
 ## 🚀 Getting Started
-
-Try it out at [simplelogo.ezequias.me](https://www.simplelogo.ezequias.me)
 
 1. Install dependencies:
 

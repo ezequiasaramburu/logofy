@@ -1,12 +1,12 @@
 # SimpleLogo
 
-A powerful yet simple web application for creating custom logos and favicons using Lucide icons. Built with Next.js and TypeScript, SimpleLogo offers an intuitive interface for designing professional logos in seconds.
+A powerful yet simple web application for creating custom logos using Lucide icons. Built with Next.js and TypeScript, SimpleLogo offers an intuitive interface for designing professional logos in seconds.
 
 ## 🌟 Features
 
 - 🎨 **Easy Logo Creation**: Create custom logos using Lucide icons with a simple, intuitive interface
 - 🎯 **Favicon Generation**: Generate favicons for your websites with one click
-- 🖼️ **Multiple Export Formats**: Export your logos in PNG, SVG, and ICO formats
+- 🖼️ **Multiple Export Formats**: Export your logos in PNG and SVG formats
 - 🎨 **Advanced Customization**:
   - Customize colors and gradients
   - Adjust icon size and rotation
@@ -25,10 +25,12 @@ A powerful yet simple web application for creating custom logos and favicons usi
 - [Tailwind CSS](https://tailwindcss.com/) - Utility-first CSS framework
 - [Lucide Icons](https://lucide.dev/) - Beautiful, consistent icon library
 - [Radix UI](https://www.radix-ui.com/) - Unstyled, accessible components
-- [html2canvas](https://html2canvas.hertzen.com/) - HTML to canvas conversion
+- [html-to-image](https://www.npmjs.com/package/html-to-image) - Convert HTML to PNG or SVG
 - [React Best Gradient Color Picker](https://www.npmjs.com/package/react-best-gradient-color-picker) - Advanced color selection
 
 ## 🚀 Getting Started
+
+Try it out at [simplelogo.ezequias.me](https://www.simplelogo.ezequias.me)
 
 1. Install dependencies:
 
@@ -61,7 +63,7 @@ pnpm dev
    - Add custom text with flexible positioning
    - Modify background settings
 3. **Preview**: See your changes in real-time
-4. **Export**: Download your logo in your preferred format (PNG, SVG, or ICO)
+4. **Export**: Download your logo in your preferred format (PNG or SVG)
 
 ## 🤝 Contributing
 

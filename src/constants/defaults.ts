@@ -1,5 +1,5 @@
 // Background defaults
-export const DEFAULT_BACKGROUND_COLOR = "linear-gradient(45deg, rgb(33, 27, 212) 23%, rgb(15, 205, 234) 94%)";
+export const DEFAULT_BACKGROUND_COLOR = "linear-gradient(45deg, RGBA(3,1,40,1) 35%, rgba(1,221,255,1) 100%)";
 export const DEFAULT_BACKGROUND_ROUNDED = 80;
 export const DEFAULT_BACKGROUND_PADDING = 30;
 
